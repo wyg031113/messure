@@ -53,7 +53,7 @@
 #include <linux/types.h>
 #include <memory.h>
 #include <linux/spi/spidev.h>
-static const char *device = "/dev/spidev1.0";
+//static const char *device = "/dev/spidev1.0";
 static uint8_t mode = SPI_MODE_3;
 static uint8_t bits = 32;
 static uint32_t speed = 5000;
@@ -61,6 +61,7 @@ static uint16_t delay;
 
 /***************************************************************************//**
  * @brief Initializes the SPI communication peripheral.
+ * @param dev device name in /dev.
  * @param lsbFirst - Transfer format (0 or 1).
  *                   Example: 0x0 - MSB first.
  *                            0x1 - LSB first.
@@ -80,13 +81,14 @@ static uint16_t delay;
  *                  Example: 0 - if initialization was successful;
  *                           negtive - if initialization was unsuccessful.
 *******************************************************************************/
-int SPI_Init(unsigned char lsbFirst,
+int SPI_Init(const char *dev,
+		       unsigned char lsbFirst,
                        unsigned long clockFreq,
                        unsigned char clockPol,
                        unsigned char clockEdg)
 {
     /* Add your code here. */
-	int fd = open(device, O_RDWR);
+	int fd = open(dev, O_RDWR);
 	if (fd < 0){
         INFO("can't open device");
 		return fd;

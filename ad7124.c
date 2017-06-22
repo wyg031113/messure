@@ -178,6 +178,7 @@ int ad7124_disable_channel(ad7124_device *dev, ad7124_st_reg *ch)
 	if(ch == NULL)
 		return NULL_POINTER_ERR;
 	ch->value &= ~ AD7124_CH_MAP_REG_CH_ENABLE;
+	DEBUG("Ch->value=%x reg_addr:%x\n",  ch->value, ch->addr);
 	CHECK_RET((ret = AD7124_WriteRegister(dev, *ch)), SUCCESS, ret);
 	return SUCCESS;
 }
@@ -404,6 +405,7 @@ int32_t AD7124_Convert_channel_Get(ad7124_device *device)
 	int ret;
 	ad7124_st_reg status = {AD7124_STATUS_REG, 0, 1, AD7124_R};
 	ret = AD7124_ReadRegister(device, &status);
+	printf("GetStatus:%d status:%x\n", ret, status.value);
 	if(ret != SUCCESS){
 		return ret;
 	}else{
@@ -633,12 +635,10 @@ void AD7124_UpdateDevSpiSettings(ad7124_device *device)
 *
 * @return Returns 0 for success or negative error code.
 *******************************************************************************/
-int32_t AD7124_Setup(ad7124_device *device, int slave_select,
+int32_t AD7124_Setup(const char *dev, ad7124_device *device, int slave_select,
 			ad7124_st_reg *regs)
 {
 	int32_t ret;
-	enum ad7124_registers regNr;
-
 	if(!device || !regs)
 		return INVALID_VAL;
 
@@ -647,7 +647,7 @@ int32_t AD7124_Setup(ad7124_device *device, int slave_select,
 	device->spi_rdy_poll_cnt = 25000;
 
 	/* Initialize the SPI communication. */
-	ret = SPI_Init(0, 10000, 1, 1);
+	ret = SPI_Init(dev, 0, 10000, 1, 1);
 	if (ret < 0){
 		INFO("SPI_Init failed.\n");
 		return SPI_INIT_ERR;
@@ -670,17 +670,12 @@ int32_t AD7124_Setup(ad7124_device *device, int slave_select,
 	if (ret < 0){
 		INFO("AD7124 device id get failed.\n");
 		goto failed2;
-	}else if(ret == AD7124_DEVICE_ID){
-		INFO("AD7124 device communication ok, get device id:%x.\n", ret);
-	}else{
-		INFO("AD7124 device communication failed, get device id failed:%x.\n", ret);
-		goto failed2;
+	}else {
+		INFO("get device id:%x.\n", ret);
 	}
-
 	return SUCCESS;
 failed2:
 	SPI_Close(device->slave_select_id);
-failed1:
 	return ret;
 }
 

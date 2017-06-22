@@ -12,6 +12,15 @@ class CollectionThread : public QThread {
     Q_OBJECT
 
 public:
+    typedef int (*start_stop_fun_t)(void);
+    enum MeterType
+    {
+        IN_OUT_RESIS,
+        INS_RES,
+        TEMPERATURE,
+        PRESSURE,
+        MeterType_NR
+    };
     ~CollectionThread();
      static CollectionThread* getInstance();
 protected:
@@ -26,6 +35,8 @@ private:
     CollectionThread();
     static QMutex mutex;
     static volatile bool bFinish;
+    static start_stop_fun_t start_funs[MeterType_NR];
+    static start_stop_fun_t stop_funs[MeterType_NR];
 public slots:
     static void start2();
     static void stop2();
@@ -35,6 +46,7 @@ public slots:
     void testVoltage();
     void testPressure();
     static void finish();
+
 };
 
 #endif // COLLECTIONTHREAD_H

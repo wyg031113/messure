@@ -1,11 +1,18 @@
 #ifndef __AD7124_REGS_H__
 #define __AD7124_REGS_H__
+
+#ifdef __cplusplus
+
+extern "C" {
+
+#endif
+
 typedef int int32_t;
 #define	AD7124_RW 1   /* Read and Write */
 #define	AD7124_R  2   /* Read only */
 #define AD7124_W  3   /* Write only */
 
-
+typedef enum ad7124_reg_access ad7124_reg_access;
 
 /*! Device register info */
 typedef struct _ad7124_st_reg
@@ -346,5 +353,11 @@ ad7124_st_reg ad7124_regs[] =
 #define AD7124_FILT_REG_POST_FILTER(x)    (((x) & 0x7) << 17)
 #define AD7124_FILT_REG_SINGLE_CYCLE      (1 << 16)
 #define AD7124_FILT_REG_FS(x)             (((x) & 0x7FF) << 0)
+
+#ifdef __cplusplus
+
+}
+
+#endif
 
 #endif /* __AD7124_REGS_H__ */

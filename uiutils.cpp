@@ -11,7 +11,9 @@ void UiUtils::setScreen() {
      UiUtils::screenHeight = ret.height();
      UiUtils::screenWidth = ret.width();
 }
-
+QString UiUtils::double2string(double d) {
+    return QString::number(d, 'f', 2);
+}
 UiUtils::~UiUtils(){
 
 }

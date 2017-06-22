@@ -39,7 +39,7 @@ void toolButton::mousePressEvent(QMouseEvent *)
 {
     int test(int, char**);
     std::cout<<"fasdfasdfasdfasd\n";
-    test(0, NULL);
+    //test(0, NULL);
     setBkPalette(70);
 }
 

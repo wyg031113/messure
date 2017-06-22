@@ -41,12 +41,18 @@
 #ifndef __AD7124_H__
 #define __AD7124_H__
 
+#ifdef __cplusplus
+
+extern "C" {
+
+#endif
 /******************************************************************************/
 /***************************** Include Files **********************************/
 /******************************************************************************/
 #include <stdint.h>
 #include "AD7124_regs.h"
-
+#define UNIPOLAR			0
+#define BIPOLAR				1
 /* AD7124 ERRORS */
 #define SUCCESS				0
 #define UNKNOW_ERR			-1
@@ -149,7 +155,7 @@ void AD7124_UpdateCRCSetting(ad7124_device *device);
 void AD7124_UpdateDevSpiSettings(ad7124_device *device);
 
 /*! Initializes the AD7124. */
-int32_t AD7124_Setup(ad7124_device *device, int slave_select,
+int32_t AD7124_Setup(const char *dev, ad7124_device *device, int slave_select,
 			ad7124_st_reg *regs);
 /*!	Stop AD7124 */
 void Ad7124_Stop(ad7124_device *device);
@@ -167,5 +173,11 @@ int32_t AD7124_Device_ID_Get(ad7124_device *device);
 int32_t AD7124_Status_Get(ad7124_device *device);
 int32_t AD7124_Convert_channel_Get(ad7124_device *device);
 void SPI_Close(int fd);
+
+#ifdef __cplusplus
+
+}
+
+#endif
 
 #endif /* __AD7124_H__ */

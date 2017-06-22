@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     bridgeresistor.cpp \
     ad7124.c \
     Communication.c \
-    Xmain.cpp
+    meter.c \
+    gpio_ctl.c
 
 HEADERS  += mainwidget.h \
     sysbutton.h \
@@ -56,7 +57,9 @@ HEADERS  += mainwidget.h \
     AD7124.h \
     AD7124_regs.h \
     Communication.h \
-    debug.h
+    debug.h \
+    meter.h \
+    gpio_ctl.h
 RESOURCES += \
     src.qrc
 
