@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
     mainWidget mainW;
 
     mainW.show();
-  // frmInput::Instance()->Init("control", "black", 10, 10);
-   frmInput::Instance()->hide();
+   frmInput::Instance()->Init("control", "black", 10, 10);
+   //frmInput::Instance()->hide();
     int ret =  app.exec();
 
     qDebug()<<"Main finished.";

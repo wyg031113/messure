@@ -25,14 +25,17 @@ StatusInfo::StatusInfo(QWidget *parent) : QWidget(parent) {
     pressureBtn = new QRadioButton(tr("压力值"));
     pressureBtn->setFixedSize(90, 35);
     start = new QPushButton(tr("开始"));
+
     start->setFixedSize(90, 35);
     start->setEnabled(true);
     stop = new QPushButton(tr("停止"));
+
     stop->setFixedSize(90, 35);
     stop->setEnabled(false);
 
     //将功能按键以水平方式布局
     firstLayout = new QHBoxLayout;
+
     firstLayout->addWidget(bridgeResistorBtn);
     firstLayout->addWidget(insulationResistorBtn);
     firstLayout->addWidget(temperatureBtn);
@@ -51,7 +54,7 @@ StatusInfo::StatusInfo(QWidget *parent) : QWidget(parent) {
     secondLayout->addLayout(tmp);
     secondLayout->addWidget(contentText);
     contentText->setText("欢迎使用测量仪!\n请选择上方的测量项目, 并点击开始.");
-
+    contentText->setProperty("noinput", true);
     //获取监测设备状态
     CollectionThread* ctd = CollectionThread::getInstance();
     connect(start, SIGNAL(clicked()),ctd, SLOT(start2()));
@@ -73,6 +76,7 @@ StatusInfo::StatusInfo(QWidget *parent) : QWidget(parent) {
     mainLayout->addLayout(firstLayout);
     mainLayout->addLayout(secondLayout);
     setLayout(mainLayout);
+
 }
 
 void StatusInfo::chageStatus(QString str) {
