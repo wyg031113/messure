@@ -3,6 +3,7 @@
 
 #include <QtGui/QWidget>
 #include <QTextCodec>
+#include "toolwidget.h"
 class mainWidget : public QWidget
 {
     Q_OBJECT
@@ -16,11 +17,13 @@ protected:
 private:
     QString bkPicName;//主窗口背景图片的名称
     QPoint normalTopLeft;//正常显示的窗口左上角坐标
+     toolWidget *toolW;
 private slots:
     void showMax();
     void showMin();
     void showSkinWidget();
     void setPicName(QString);
+    void MuMaClicked();
 };
 
 #endif // MAINWIDGET_H

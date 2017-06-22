@@ -34,7 +34,7 @@ mainWidget::mainWidget(QWidget *parent)
     connect(toolW->tbTiJian, SIGNAL(myToolClicked(int)), contentW->stack, SLOT(setCurrentIndex(int)));
     connect(toolW->tbLouDong, SIGNAL(myToolClicked(int)), contentW->stack, SLOT(setCurrentIndex(int)));
     connect(toolW->tbMuMa, SIGNAL(myToolClicked(int)), contentW->stack, SLOT(setCurrentIndex(int)));
-
+    connect(toolW->tbMuMa, SIGNAL(myToolClicked(int)), this, SLOT(MuMaClicked()));
     QVBoxLayout *mainLayout=new QVBoxLayout;
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0,0,0,0);
@@ -45,6 +45,10 @@ mainWidget::mainWidget(QWidget *parent)
     mainLayout->addWidget(statusW);
 
     setLayout(mainLayout);
+}
+void mainWidget::MuMaClicked()
+{
+   // toolW->setFocus();
 }
 
 mainWidget::~mainWidget()

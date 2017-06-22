@@ -24,7 +24,8 @@ titleWidget::titleWidget(QWidget *parent) :
     connect(btnMax,SIGNAL(clicked()),this,SIGNAL(showMax()));
     btnClose=new sysButton("sys_button_close.png",tr("关闭"));
     connect(btnClose,SIGNAL(clicked()),qApp,SLOT(quit()));
-
+    btnClose->setFixedHeight(30);
+    btnSkin->setFixedHeight(30);
 
 
     QHBoxLayout *mainLayout=new QHBoxLayout;
@@ -33,15 +34,16 @@ titleWidget::titleWidget(QWidget *parent) :
     mainLayout->addStretch();
     mainLayout->addWidget(btnSkin,0,Qt::AlignVCenter);
     btnSkin->setContentsMargins(0,0,5,0);
-    mainLayout->addWidget(btnMenuBar);
-    mainLayout->addWidget(btnMin);
-    mainLayout->addWidget(btnMax);
+   // mainLayout->addWidget(btnMenuBar);
+    //mainLayout->addWidget(btnMin);
+    //mainLayout->addWidget(btnMax);
     mainLayout->addWidget(btnClose);
 
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0,0,0,0);
     setLayout(mainLayout);
-    setFixedHeight((int)(UiUtils::screenHeight *0.053));
+    setFixedHeight((int)(UiUtils::screenHeight *0.083));
+
     isMove=false;
 }
 
