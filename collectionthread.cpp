@@ -3,6 +3,7 @@
 CollectionThread* CollectionThread::single = new CollectionThread;
 int CollectionThread::state = 0;
 bool CollectionThread::working = false;
+bool volatile CollectionThread::bFinish = false;
 QWaitCondition CollectionThread::push;
 QMutex CollectionThread::mutex;
 CollectionThread::CollectionThread()
@@ -13,7 +14,7 @@ CollectionThread::CollectionThread()
 void CollectionThread::run() {
     int i=0;
     QString str;
-    while(true) {
+    while(!bFinish) {
         if (working) {
             i++;
            sleep(1);
@@ -39,6 +40,7 @@ void CollectionThread::run() {
             push.wait(&mutex);
         }
     }
+    qDebug()<<"Working thread finished.";
 }
 
 CollectionThread* CollectionThread::getInstance(){
@@ -66,3 +68,11 @@ void CollectionThread::testInsulationResistor() {state = 1;}
 void CollectionThread::testTemperature(){state = 2;}
 void CollectionThread::testVoltage() {state = 3;}
 void CollectionThread::testPressure() {state = 4;}
+void CollectionThread::finish()
+{
+    qDebug()<<"Finish";
+    bFinish = true;
+    start2();
+    CollectionThread::getInstance()->wait();
+     qDebug()<<"Finish";
+}

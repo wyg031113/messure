@@ -20,11 +20,10 @@ mainWidget::mainWidget(QWidget *parent)
     QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));//tr使用的编码
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));//QString使用的编码
 
-
     setGeometry(QApplication::desktop()->availableGeometry()); //设置满屏
     setWindowFlags(Qt::FramelessWindowHint);
     bkPicName=":/img/skin/oldWood.jpg";
-
+    this->setWindowState(Qt::WindowFullScreen);
     titleWidget *titleW=new titleWidget;
     connect(titleW,SIGNAL(showSkin()),this,SLOT(showSkinWidget()));
 

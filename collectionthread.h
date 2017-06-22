@@ -25,6 +25,7 @@ private:
     static bool working;
     CollectionThread();
     static QMutex mutex;
+    static volatile bool bFinish;
 public slots:
     static void start2();
     static void stop2();
@@ -33,6 +34,7 @@ public slots:
     void testTemperature();
     void testVoltage();
     void testPressure();
+    static void finish();
 };
 
 #endif // COLLECTIONTHREAD_H

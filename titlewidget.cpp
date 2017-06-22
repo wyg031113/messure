@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 #include<uiutils.h>
-
+#include "collectionthread.h"
 titleWidget::titleWidget(QWidget *parent) :
     QWidget(parent)
 {
@@ -24,6 +24,8 @@ titleWidget::titleWidget(QWidget *parent) :
     connect(btnMax,SIGNAL(clicked()),this,SIGNAL(showMax()));
     btnClose=new sysButton("sys_button_close.png",tr("关闭"));
     connect(btnClose,SIGNAL(clicked()),qApp,SLOT(quit()));
+
+
 
     QHBoxLayout *mainLayout=new QHBoxLayout;
     mainLayout->addWidget(versionText,0,Qt::AlignVCenter);
