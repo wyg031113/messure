@@ -5,17 +5,18 @@
 #include<QVBoxLayout>
 #include <QPushButton>
 #include<collectionthread.h>
+#include <QRadioButton>
 class StatusInfo : public QWidget {
     Q_OBJECT
 public:
     explicit StatusInfo(QWidget *parent=0);
     ~StatusInfo();
 private:
-    QPushButton *bridgeResistorBtn;
-    QPushButton *insulationResistorBtn;
-    QPushButton *temperatureBtn;
-    QPushButton *voltageBtn;
-    QPushButton *pressureBtn;
+    QRadioButton *bridgeResistorBtn;
+    QRadioButton *insulationResistorBtn;
+    QRadioButton *temperatureBtn;
+    QRadioButton *voltageBtn;
+    QRadioButton *pressureBtn;
     QPushButton *start;
     QPushButton *stop;
     QTextBrowser *contentText;
@@ -23,6 +24,8 @@ private:
     QHBoxLayout *secondLayout;
     QVBoxLayout *mainLayout;
     static CollectionThread *collectionThread;
+    void MesureTypeDisable();
+    void MesureTypeEnable();
 public slots:
     void chageStatus(QString);
     void startDisable();

@@ -2,6 +2,7 @@
 #include <QApplication>
 #include<QString>
 #include<QDesktopWidget>
+#include <QRadioButton>
 
 //获取一个后台线程用来采集数据
 CollectionThread* StatusInfo::collectionThread = CollectionThread::getInstance();
@@ -12,15 +13,16 @@ StatusInfo::StatusInfo(QWidget *parent) : QWidget(parent) {
     this->setPalette(pe);
 
     //生成按键
-    bridgeResistorBtn = new QPushButton(tr("电桥电阻"));
+    bridgeResistorBtn = new QRadioButton(tr("电桥电阻"));
     bridgeResistorBtn->setFixedSize(90, 35);
-    insulationResistorBtn = new QPushButton(tr("绝缘电阻"));
-    insulationResistorBtn->setFixedSize(70, 35);
-    temperatureBtn = new QPushButton(tr("测点温度"));
+    bridgeResistorBtn->setChecked(true);
+    insulationResistorBtn = new QRadioButton(tr("绝缘电阻"));
+    insulationResistorBtn->setFixedSize(80, 35);
+    temperatureBtn = new QRadioButton(tr("测点温度"));
     temperatureBtn->setFixedSize(90, 35);
-    voltageBtn = new QPushButton(tr("零点电压值"));
-    voltageBtn->setFixedSize(90, 35);
-    pressureBtn = new QPushButton(tr("压力值"));
+    voltageBtn = new QRadioButton(tr("零点电压值"));
+    voltageBtn->setFixedSize(100, 35);
+    pressureBtn = new QRadioButton(tr("压力值"));
     pressureBtn->setFixedSize(90, 35);
     start = new QPushButton(tr("开始"));
     start->setFixedSize(90, 35);
@@ -53,6 +55,7 @@ StatusInfo::StatusInfo(QWidget *parent) : QWidget(parent) {
     CollectionThread* ctd = CollectionThread::getInstance();
     connect(start, SIGNAL(clicked()),ctd, SLOT(start2()));
     connect(start, SIGNAL(clicked()), this, SLOT(startDisable()));
+
     connect(stop, SIGNAL(clicked()), ctd, SLOT(stop2()));
     connect(stop, SIGNAL(clicked()), this, SLOT(stopDisable()));
     connect(ctd, SIGNAL(modify(QString)), this, SLOT(chageStatus(QString)));
@@ -74,9 +77,34 @@ StatusInfo::StatusInfo(QWidget *parent) : QWidget(parent) {
 void StatusInfo::chageStatus(QString str) {
    contentText->setText(str);
 }
-
-void StatusInfo::startDisable() {start->setEnabled(false);stop->setEnabled(true);}
-void StatusInfo::stopDisable() {stop->setEnabled(false);start->setEnabled(true);}
+void StatusInfo::MesureTypeDisable()
+{
+    bridgeResistorBtn->setDisabled(true);
+    insulationResistorBtn->setDisabled(true);
+    temperatureBtn->setDisabled(true);
+    voltageBtn->setDisabled(true);
+    pressureBtn->setDisabled(true);
+}
+void StatusInfo::MesureTypeEnable()
+{
+    bridgeResistorBtn->setEnabled(true);
+    insulationResistorBtn->setEnabled(true);
+    temperatureBtn->setEnabled(true);
+    voltageBtn->setEnabled(true);
+    pressureBtn->setEnabled(true);
+}
+void StatusInfo::startDisable()
+{
+    start->setEnabled(false);
+    stop->setEnabled(true);
+    MesureTypeDisable();
+}
+void StatusInfo::stopDisable()
+{
+    stop->setEnabled(false);
+    start->setEnabled(true);
+    MesureTypeEnable();
+}
 StatusInfo::~StatusInfo(){
     delete bridgeResistorBtn;
     delete insulationResistorBtn;
