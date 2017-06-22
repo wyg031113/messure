@@ -20,7 +20,8 @@ int main(int argc, char *argv[])
     palette.setColor(QPalette::WindowText,Qt::black);
     app.setPalette(palette);
     //设置字体为宋体
-    QFont qf(QString("WenQuanYi Zen Hei"));
+   // QFont qf(QString("WenQuanYi Zen Hei"));
+     QFont qf(QString("SimSun"));
     cout<<"QTFonstSize:"<<qf.pointSize()<<endl;
 
     app.setFont(qf);
@@ -32,8 +33,8 @@ int main(int argc, char *argv[])
     mainWidget mainW;
 
     mainW.show();
-    //frmInput::Instance()->Init("control", "black", 10, 10);
-
+  // frmInput::Instance()->Init("control", "black", 10, 10);
+   frmInput::Instance()->hide();
     int ret =  app.exec();
 
     qDebug()<<"Main finished.";

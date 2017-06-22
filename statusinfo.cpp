@@ -50,6 +50,7 @@ StatusInfo::StatusInfo(QWidget *parent) : QWidget(parent) {
     contentText->setReadOnly(true);
     secondLayout->addLayout(tmp);
     secondLayout->addWidget(contentText);
+    contentText->setText("欢迎使用测量仪!\n请选择上方的测量项目, 并点击开始.");
 
     //获取监测设备状态
     CollectionThread* ctd = CollectionThread::getInstance();
