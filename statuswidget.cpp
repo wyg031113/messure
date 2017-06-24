@@ -5,6 +5,10 @@
 #include<QPushButton>
 #include<uiutils.h>
 #include "clickedlabel.h"
+#include <QApplication>
+#include <QFile>
+#include <QProcess>
+#include <QStringList>
 statusWidget::statusWidget(QWidget *parent) :
     QWidget(parent)
 {
@@ -35,5 +39,21 @@ statusWidget::statusWidget(QWidget *parent) :
 }
 
 void statusWidget::showUpdateInfo() {
-    QMessageBox::information(0,"版本更新", "当前已是最新版本!");
+    if(!UiUtils::mount_usb()){
+        return;
+    }
+   QString app_dir = QApplication::applicationDirPath();
+   QString app_file = QApplication::applicationFilePath();
+   QString app_name  = QApplication::applicationName();
+   QString src = QString(UiUtils::mount_point) + QString("/")+QString(app_name);
+   QFile  dst(app_file);
+    if(dst.remove() && QFile::copy(src, app_file)){
+         QMessageBox::information(0,"版本更新", "版本更新成功!\n点击确定重新启动本程序!");
+         qApp->quit();
+         QProcess::startDetached(app_file, QApplication::arguments());
+    }else{
+         QMessageBox::information(0,"更新失败", "没有发现新版本!");
+    }
+
+    UiUtils::umount_usb();
 }
