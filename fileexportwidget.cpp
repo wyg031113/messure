@@ -6,6 +6,9 @@
 #include<QDir>
 #include<QMessageBox>
 #include<QScrollBar>
+#include <sys/mount.h>
+#include <errno.h>
+#include <string.h>
 FileExportWidget::FileExportWidget(QWidget *parent) : QWidget(parent)
 {
     flag = false;
@@ -64,13 +67,33 @@ void FileExportWidget::selectAll2() {
 }
 
 void FileExportWidget::exportFile2() {
-    QDir dir("/media/sda1");
+    const char *dev = "/dev/loop0";
+    const char *mount_point = "/usb";
+    const char *filsys_type = "ext3";
+    QFile dir(dev);
+    QDir usb(mount_point);
     if (!dir.exists()){
         QMessageBox::warning(0, "文件拷贝", "未发现u盘!");
         return;
     }
+    if (!usb.exists()){
+        qDebug()<<mount_point<<" note exists, creating...";
+        if(!usb.mkdir(mount_point)){
+            QMessageBox::warning(0, "失败", QString( "创建/usb失败!\n")+QString(strerror(errno)));
+             return;
+        }
+    }
+    if(mount(dev, mount_point, filsys_type, 0, NULL) < 0){
+         qDebug()<<strerror(errno);
+        QMessageBox::warning(0,  "失败", QString("挂载U盘失败!\n") + QString(strerror(errno)));
+
+         return;
+    }
     exportFile->setCheckable(false);
-    QFile::copy("/root/loop.sh","/media/sda1/qt.sh2");
-    QMessageBox::information(0, "文件拷贝","文件拷贝成功");
+    if(QFile::copy("/root/qt.sh", QString( mount_point)+QString("/")))
+        QMessageBox::information(0, "文件拷贝","文件拷贝成功");
+    else
+          QMessageBox::information(0, "失败",QString("文件拷贝失败!\n目标文件已经存在!"));
+    umount(mount_point);
     exportFile->setCheckable(true);
 }
