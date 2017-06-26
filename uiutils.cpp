@@ -28,7 +28,7 @@ QString UiUtils::double2string(double d) {
 const char * UiUtils::dev = "/dev/loop0";
 const char * UiUtils::mount_point = "/usb";
 const char * UiUtils::filsys_type = "ext3";
-const char * UiUtils::data_file = "/data.txt";
+const char * UiUtils::data_dir = "/data/";
 bool UiUtils::mount_usb()
 {
     QFile dir(dev);

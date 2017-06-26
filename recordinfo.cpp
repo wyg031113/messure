@@ -136,7 +136,7 @@ RecordInfo::RecordInfo(QWidget *parent):
 void RecordInfo::save2() {
 
     QDateTime qdt = QDateTime::currentDateTime();
-    QFile f(QString("/data/data")+qdt.toString("yyyyMMdd_hhmmss")+QString(".txt"));
+    QFile f(UiUtils::data_dir+QString("data")+qdt.toString("yyyyMMdd_hhmmss")+QString(".txt"));
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append))
     {
         qDebug() << "Open failed." << endl;

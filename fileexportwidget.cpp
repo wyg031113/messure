@@ -12,7 +12,7 @@ void FileExportWidget::refresh_list()
     list.clear();
     listWidget->clear();
     list_selected.clear();
-    QDir qd("/data/");
+    QDir qd(UiUtils::data_dir);
     QStringList qsl = qd.entryList();
     for(int i = 0; i < qsl.size(); i++)
     {
