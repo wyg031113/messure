@@ -36,7 +36,7 @@ mainWidget::mainWidget(QWidget *parent)
     connect(toolW->tbMuMa, SIGNAL(myToolClicked(int)), contentW->stack, SLOT(setCurrentIndex(int)));
     connect(toolW->tbMuMa, SIGNAL(myToolClicked(int)), this, SLOT(MuMaClicked()));
 
- //   connect(toolW->tbMuMa, SIGNAL(myToolClicked(int)), (toolW->tbMuMa->file, SLOT(MuMaClicked()));
+    connect(toolW->tbLouDong, SIGNAL(myToolClicked(int)), contentW->fileExportWidget, SLOT(refresh_list()));
 
     QVBoxLayout *mainLayout=new QVBoxLayout;
     mainLayout->setSpacing(0);

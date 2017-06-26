@@ -10,6 +10,8 @@
 void FileExportWidget::refresh_list()
 {
     list.clear();
+    listWidget->clear();
+    list_selected.clear();
     QDir qd("/data/");
     QStringList qsl = qd.entryList();
     for(int i = 0; i < qsl.size(); i++)
@@ -23,6 +25,7 @@ void FileExportWidget::refresh_list()
         listWidget->insertItem(i,tmp);
         list.append(tmp);
     }
+    qDebug()<<"ListSize:"<<list.size();
 }
 
 FileExportWidget::FileExportWidget(QWidget *parent) : QWidget(parent)
@@ -59,31 +62,61 @@ FileExportWidget::~FileExportWidget(){
 }
 
 void FileExportWidget::setChecked(QListWidgetItem* item){
-    if(item->checkState() ==Qt::Unchecked)
+    if(item->checkState() ==Qt::Unchecked){
         item->setCheckState(Qt::Checked);
-    else
+        list_selected.append(item);
+    }
+    else{
         item->setCheckState(Qt::Unchecked);
+        item->setSelected(false);
+        list_selected.removeOne(item);
+    }
 }
 
 void FileExportWidget::selectAll2() {
    QList<QListWidgetItem*>::iterator item;
    if (flag)
-       for(item = list.begin(); item != list.end();item++)
+       for(item = list.begin(); item != list.end();item++){
            (*item)->setCheckState(Qt::Unchecked);
+          list_selected.removeOne(*item);
+       }
    else
-       for(item = list.begin(); item != list.end();item++)
+       for(item = list.begin(); item != list.end();item++){
            (*item)->setCheckState(Qt::Checked);
+           list_selected.append(*item);
+       }
    flag = !flag;
 }
 
 void FileExportWidget::exportFile2() {
     if(!UiUtils::mount_usb())
         return;
-    exportFile->setCheckable(false);
-    if(QFile::copy("/root/qt.sh", QString(UiUtils::mount_point)+QString("/xxx")))
-        QMessageBox::information(0, "文件拷贝","文件拷贝成功");
-    else
-          QMessageBox::information(0, "失败",QString("文件拷贝失败!\n目标文件已经存在!"));
+   // exportFile->setCheckable(false);
+    QList<QListWidgetItem*>::iterator item;
+    qDebug()<<"Size2:"<<list.size();
+    for(item = list_selected.begin(); item != list_selected.end();item++){
+
+                QString srcFile = QString("/data/")+(*item)->text();
+                QString dstFile = QString(UiUtils::mount_point)+QString("/")+(*item)->text();
+                qDebug()<<srcFile<<" "<<dstFile;
+                if(QFile::copy(srcFile, dstFile)){
+                        QFile qf(srcFile);
+                         qf.remove();
+                }else{
+                      QMessageBox::information(0, "失败",QString("文件拷贝失败!\n目标文件已经存在!"));
+                      break;
+                }
+
+    }
+
+
+    if(item == list_selected.end())
+         QMessageBox::information(0, "文件拷贝","文件拷贝成功");
+//    if(QFile::copy("/root/qt.sh", QString(UiUtils::mount_point)+QString("/xxx")))
+//        QMessageBox::information(0, "文件拷贝","文件拷贝成功");
+//    else
+//          QMessageBox::information(0, "失败",QString("文件拷贝失败!\n目标文件已经存在!"));
    UiUtils::umount_usb();
-    exportFile->setCheckable(true);
+   refresh_list();
+   // exportFile->setCheckable(true);
 }

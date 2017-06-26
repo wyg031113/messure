@@ -20,6 +20,7 @@ public:
     QPushButton *exportFile;
     QPushButton *selectAll;
     QList<QListWidgetItem*> list;
+    QList<QListWidgetItem*> list_selected;
     bool flag;
 signals:
 
