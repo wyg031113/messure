@@ -8,6 +8,7 @@
 #include<QTimeEdit>
 #include <QHBoxLayout>
 #include<QPushButton>
+#include <QLineEdit>
 class RecordInfo : public QWidget{
 
     Q_OBJECT
@@ -31,10 +32,17 @@ private:
     QLabel *SINLabel;
     QLineEdit *SINEdit;
     QPushButton *save;
+    QPushButton *refresh_btn;
     QGridLayout *mainLayout;
 
+      QLineEdit *year;
+      QLineEdit *month;
+      QLineEdit *day;
+      QLineEdit *hour;
+      QLineEdit *minute;
 public slots:
     void save2();
+    void refresh_time();
 };
 
 #endif // RECORDINFO_H

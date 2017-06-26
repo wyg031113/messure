@@ -27,6 +27,7 @@ public slots:
     void setChecked(QListWidgetItem*);
     void selectAll2();
     void exportFile2();
+    void refresh_list();
 };
 
 #endif // FILEEXPORTWIDGET_H

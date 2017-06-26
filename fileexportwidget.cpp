@@ -7,6 +7,23 @@
 #include<QMessageBox>
 #include<QScrollBar>
 #include "uiutils.h"
+void FileExportWidget::refresh_list()
+{
+    list.clear();
+    QDir qd("/data/");
+    QStringList qsl = qd.entryList();
+    for(int i = 0; i < qsl.size(); i++)
+    {
+        if(qsl[i] == "."|| qsl[i]=="..")
+            continue;
+        QListWidgetItem *tmp =  new QListWidgetItem(qsl[i], listWidget);
+        //tmp->setFont(f);
+        tmp->setCheckState(Qt::Unchecked);
+        tmp->setSizeHint(QSize(0,30));
+        listWidget->insertItem(i,tmp);
+        list.append(tmp);
+    }
+}
 
 FileExportWidget::FileExportWidget(QWidget *parent) : QWidget(parent)
 {
@@ -22,17 +39,11 @@ FileExportWidget::FileExportWidget(QWidget *parent) : QWidget(parent)
     vb->addWidget(exportFile);
     QFont f;
     f.setPointSize(18);
-    for(int i=0;i<5;i++){
-        QListWidgetItem *tmp =  new QListWidgetItem("data", listWidget);
-        tmp->setFont(f);
-        tmp->setCheckState(Qt::Unchecked);
-        tmp->setSizeHint(QSize(0,30));
-        listWidget->insertItem(i,tmp);
-        list.append(tmp);
-    }
+    refresh_list();
     connect(listWidget,SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(setChecked(QListWidgetItem*)));
     connect(selectAll, SIGNAL(clicked()), this, SLOT(selectAll2()));
     connect(exportFile, SIGNAL(clicked()), this, SLOT(exportFile2()));
+
     hb = new QHBoxLayout;
     hb->addWidget(listWidget);
     hb->addLayout(vb);

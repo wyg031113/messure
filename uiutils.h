@@ -19,6 +19,7 @@ public:
     static const char *dev;
     static  const char *mount_point;
     static const char *filsys_type;
+    static const char *data_file;
 };
 
 #endif // UIUTILS_H

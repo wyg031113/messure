@@ -28,5 +28,6 @@
         <file>img/toolWidget/status.png</file>
         <file>img/toolWidget/config.png</file>
         <file>img/toolWidget/export.png</file>
+        <file>img/warning.png</file>
     </qresource>
 </RCC>

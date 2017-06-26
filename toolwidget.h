@@ -2,6 +2,8 @@
 #define TOOLWIDGET_H
 
 #include <QWidget>
+#include <QTimer>
+#include <QLabel>
 #include "toolbutton.h"
 class toolWidget : public QWidget
 {
@@ -11,9 +13,14 @@ public:
     toolButton *tbTiJian;
     toolButton *tbMuMa;
     toolButton *tbLouDong;
+    QLabel *warn;
+    QTimer *timer;
+    void start_timer();
+    void stop_timer();
 signals:
     
 public slots:
+    void timer_done();
 };
 
 #endif // TOOLWIDGET_H

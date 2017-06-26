@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QStackedWidget>
+#include "fileexportwidget.h"
 class contentWidget : public QWidget
 {
     Q_OBJECT
@@ -10,6 +11,7 @@ public:
     explicit contentWidget(QWidget *parent = 0);
     ~contentWidget();
     QStackedWidget *stack;
+     FileExportWidget *fileExportWidget;
 signals:
     
 public slots:

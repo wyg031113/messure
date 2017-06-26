@@ -19,7 +19,7 @@ contentWidget::contentWidget(QWidget *parent) :
     stack->setFrameStyle(QFrame::Panel|QFrame::Raised);
     StatusInfo *statusInfo = new StatusInfo;
     RecordInfo *recordInfo = new RecordInfo;
-    FileExportWidget *fileExportWidget = new FileExportWidget;
+    fileExportWidget = new FileExportWidget;
     stack->addWidget(statusInfo);
     stack->addWidget(recordInfo);
     stack->addWidget(fileExportWidget);

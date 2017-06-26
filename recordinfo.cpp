@@ -2,6 +2,29 @@
 #include<QFont>
 #include<QCalendarWidget>
 #include<QMessageBox>
+#include <QTime>
+#include <QDate>
+#include <fstream>
+#include "uiutils.h"
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
+#include <QString>
+#include <iostream>
+#include <QDateTime>
+
+using namespace std;
+ void RecordInfo::refresh_time()
+ {
+    QTime now = QTime::currentTime();
+    QDate date = QDate::currentDate();
+    year->setText(QString::number(date.year()));
+    month->setText(QString::number(date.month()));
+    day->setText(QString::number(date.day()));
+    hour->setText(QString::number(now.hour()));
+    minute->setText(QString::number(now.minute()));
+ }
+
 RecordInfo::RecordInfo(QWidget *parent):
     QWidget(parent) {
     QPalette pe;
@@ -31,24 +54,23 @@ RecordInfo::RecordInfo(QWidget *parent):
     DateLabel = new QLabel(tr("测试日期:"));
     DateLabel->setFont(f);
     DateInput = new QHBoxLayout;
-    QLineEdit *year = new QLineEdit;
+    year = new QLineEdit;
     year->setFont(f);
-    year->setText("2017");
     year->setFixedWidth(70);
     QLabel *year1 = new QLabel(tr("年"));
     year1->setFont(f);
-    QLineEdit *month = new QLineEdit;
+
+    month = new QLineEdit;
     month->setFont(f);
-    month->setText("12");
     month->setFixedWidth(40);
     QLabel *month1 = new QLabel(tr("月"));
     month1->setFont(f);
-    QLineEdit *day = new QLineEdit;
+    day = new QLineEdit;
     day->setFont(f);
-    day->setText("30");
     day->setFixedWidth(40);
     QLabel *day1 = new QLabel(tr("日"));
     day1->setFont(f);
+
     DateInput->addWidget(year);
     DateInput->addWidget(year1);
     DateInput->addWidget(month);
@@ -59,15 +81,15 @@ RecordInfo::RecordInfo(QWidget *parent):
     TimeLabel = new QLabel(tr("测试时间:"));
     TimeLabel->setFont(f);
     TimeInput = new QHBoxLayout;
-    QLineEdit *hour = new QLineEdit;
+    hour = new QLineEdit;
     hour->setFont(f);
-    hour->setText("12");
+
     hour->setFixedWidth(90);
     QLabel *hour1 = new QLabel(tr("时"));
     hour1->setFont(f);
-    QLineEdit *minute = new QLineEdit;
+    minute = new QLineEdit;
     minute->setFont(f);
-    minute->setText("13");
+
     minute->setFixedWidth(90);
     QLabel *minute1 = new QLabel(tr("分"));
     minute1->setFont(f);
@@ -81,6 +103,10 @@ RecordInfo::RecordInfo(QWidget *parent):
     SINEdit->setFont(f);
     save = new QPushButton(tr("保存"));
     save->setFixedSize(70, 35);
+
+    refresh_btn = new QPushButton(tr("刷新时间"));
+    refresh_btn->setFixedSize(70, 35);
+
     mainLayout = new QGridLayout(this);
     mainLayout->setMargin(15);
     mainLayout->setSpacing(12);
@@ -99,12 +125,34 @@ RecordInfo::RecordInfo(QWidget *parent):
     mainLayout->addWidget(TimeLabel, 6, 0);
     mainLayout->addLayout(TimeInput, 6, 1);
     mainLayout->addWidget(save, 6, 2);
+    mainLayout->addWidget(refresh_btn, 6, 3);
     mainLayout->setSizeConstraint(QLayout::SetFixedSize);
-
+    refresh_time();
     connect(save, SIGNAL(clicked()), this, SLOT(save2()));
+    connect(refresh_btn, SIGNAL(clicked()), this, SLOT(refresh_time()));
 }
 
+
 void RecordInfo::save2() {
+
+    QDateTime qdt = QDateTime::currentDateTime();
+    QFile f(QString("/data/data")+qdt.toString("yyyyMMdd_hhmmss")+QString(".txt"));
+    if(!f.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append))
+    {
+        qDebug() << "Open failed." << endl;
+        return;
+    }
+    QTextStream txtOutput(&f);
+    txtOutput<<year->text()<<" "<<month->text()<<" "<<day->text()<<" "
+                 <<hour->text()<<" "<<minute->text()<<endl;
+    txtOutput<<SINLabel->text()<<": " << SINEdit->text()<<endl;
+    txtOutput<<EINLabel->text()<<": " << EINEdit->text()<<endl;
+    txtOutput<<TesterLabel->text()<<": "<<TesterEdit->text()<<endl;
+    txtOutput<<CircumstanceLabel->text()<<": "<<CircumstanceEdit->text()<<endl;
+    txtOutput<<HumidityLable->text()<<": "<<HumidityEdit->text()<<endl;
+    txtOutput<<endl;
+    f.close();
+
     QMessageBox::information(0, "文件保存", "文件保存成功!");
 }
 
@@ -123,6 +171,12 @@ RecordInfo::~RecordInfo() {
     delete DateLabel;
     delete save;
     delete mainLayout;
+
+    delete year;
+    delete month;
+    delete day;
+    delete hour;
+    delete minute;
 }
 
 

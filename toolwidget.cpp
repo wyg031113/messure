@@ -18,14 +18,42 @@ toolWidget::toolWidget(QWidget *parent) :
     logoLabel->setFixedSize(pixmap.size());
     logoLabel->setCursor(Qt::PointingHandCursor);
 
+    warn=new QLabel;
+    QPixmap warn_map(":/img/warning.png");
+    warn->setPixmap(warn_map);
+    warn->setFixedSize(warn_map.size());
+    warn->setCursor(Qt::PointingHandCursor);
+
     QHBoxLayout *mainLayout=new QHBoxLayout;
     mainLayout->setContentsMargins(5,0,5,0);
     mainLayout->addWidget(tbTiJian);
     mainLayout->addWidget(tbMuMa);
     mainLayout->addWidget(tbLouDong);
-    mainLayout->addStretch();
+    mainLayout->addStretch(1);
+    mainLayout->addWidget(warn);
+    mainLayout->addStretch(1);
     mainLayout->addWidget(logoLabel);
     setLayout(mainLayout);
-
     setFixedHeight((int)(UiUtils::screenHeight * 0.167));
+    start_timer();
 }
+ void toolWidget::timer_done()
+ {
+     if(warn->isVisible()){
+         warn->setVisible(false);
+     }else{
+         warn->setVisible(true);
+     }
+ }
+ void  toolWidget::start_timer()
+ {
+     timer = new QTimer(this);
+     connect(timer, SIGNAL(timeout()), this, SLOT(timer_done()));
+     timer->start(1000);
+ }
+
+ void  toolWidget::stop_timer()
+ {
+     timer->stop();;
+     warn->setVisible(false);
+ }
