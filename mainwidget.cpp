@@ -22,7 +22,7 @@ mainWidget::mainWidget(QWidget *parent)
 
     setGeometry(QApplication::desktop()->availableGeometry()); //设置满屏
     setWindowFlags(Qt::FramelessWindowHint);
-    bkPicName=":/img/skin/oldWood.jpg";
+    bkPicName=":/img/skin/oldWood.png";
     this->setWindowState(Qt::WindowFullScreen);
     titleWidget *titleW=new titleWidget;
     connect(titleW,SIGNAL(showSkin()),this,SLOT(showSkinWidget()));
