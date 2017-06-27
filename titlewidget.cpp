@@ -8,6 +8,8 @@
 #include <QMouseEvent>
 #include<uiutils.h>
 #include "collectionthread.h"
+#include <QMessageBox>
+#include "gpio_ctl.h"
 titleWidget::titleWidget(QWidget *parent) :
     QWidget(parent)
 {
@@ -23,7 +25,8 @@ titleWidget::titleWidget(QWidget *parent) :
     btnMax=new sysButton("sys_button_max.png",tr("最大化"));
     connect(btnMax,SIGNAL(clicked()),this,SIGNAL(showMax()));
     btnClose=new sysButton("sys_button_close.png",tr("关闭"));
-    connect(btnClose,SIGNAL(clicked()),qApp,SLOT(quit()));
+   // connect(btnClose,SIGNAL(clicked()),qApp,SLOT(quit()));
+    connect(btnClose,SIGNAL(clicked()),this,SLOT(quit_main()));
     btnClose->setFixedHeight(30);
     btnSkin->setFixedHeight(30);
 
@@ -45,6 +48,14 @@ titleWidget::titleWidget(QWidget *parent) :
     setFixedHeight((int)(UiUtils::screenHeight *0.083));
 
     isMove=false;
+}
+void titleWidget::quit_main()
+{
+    int ret = QMessageBox::question(NULL, "关机","是否关机?", QMessageBox::Yes|QMessageBox::No);
+    if(ret == QMessageBox::Yes){
+        qApp->quit();
+        set_gpio_value(GPIO16, 1);
+    }
 }
 
 void titleWidget::mousePressEvent(QMouseEvent *e)

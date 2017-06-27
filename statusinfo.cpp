@@ -13,14 +13,19 @@ StatusInfo::StatusInfo(QWidget *parent) : QWidget(parent) {
     this->setPalette(pe);
 
     //生成按键
+    selfTestBtn = new QRadioButton(tr("自检"));
+    selfTestBtn->setFixedSize(50, 35);
+    selfTestBtn->setChecked(true);
+    CollectionThread::getInstance()->testSelf();
+
     bridgeResistorBtn = new QRadioButton(tr("电桥电阻"));
     bridgeResistorBtn->setFixedSize(90, 35);
-    bridgeResistorBtn->setChecked(true);
+
     insulationResistorBtn = new QRadioButton(tr("绝缘电阻"));
     insulationResistorBtn->setFixedSize(80, 35);
     temperatureBtn = new QRadioButton(tr("测点温度"));
     temperatureBtn->setFixedSize(90, 35);
-    voltageBtn = new QRadioButton(tr("零点电压值"));
+    voltageBtn = new QRadioButton(tr("零点电压"));
     voltageBtn->setFixedSize(100, 35);
     pressureBtn = new QRadioButton(tr("压力值"));
     pressureBtn->setFixedSize(90, 35);
@@ -35,7 +40,7 @@ StatusInfo::StatusInfo(QWidget *parent) : QWidget(parent) {
 
     //将功能按键以水平方式布局
     firstLayout = new QHBoxLayout;
-
+    firstLayout->addWidget(selfTestBtn);
     firstLayout->addWidget(bridgeResistorBtn);
     firstLayout->addWidget(insulationResistorBtn);
     firstLayout->addWidget(temperatureBtn);
@@ -63,6 +68,8 @@ StatusInfo::StatusInfo(QWidget *parent) : QWidget(parent) {
     connect(stop, SIGNAL(clicked()), ctd, SLOT(stop2()));
     connect(stop, SIGNAL(clicked()), this, SLOT(stopDisable()));
     connect(ctd, SIGNAL(modify(QString)), this, SLOT(chageStatus(QString)));
+
+    connect(selfTestBtn, SIGNAL(clicked()), ctd, SLOT(testSelf()));
     connect(bridgeResistorBtn, SIGNAL(clicked()), ctd, SLOT(testBridgeResistor()));
     connect(insulationResistorBtn, SIGNAL(clicked()), ctd, SLOT(testInsulationResistor()));
     connect(temperatureBtn, SIGNAL(clicked()), ctd, SLOT(testTemperature()));
@@ -89,6 +96,7 @@ void StatusInfo::MesureTypeDisable()
     temperatureBtn->setDisabled(true);
     voltageBtn->setDisabled(true);
     pressureBtn->setDisabled(true);
+   selfTestBtn->setDisabled(true);
 }
 void StatusInfo::MesureTypeEnable()
 {
@@ -97,6 +105,7 @@ void StatusInfo::MesureTypeEnable()
     temperatureBtn->setEnabled(true);
     voltageBtn->setEnabled(true);
     pressureBtn->setEnabled(true);
+    selfTestBtn->setEnabled(true);
 }
 void StatusInfo::startDisable()
 {
@@ -122,4 +131,5 @@ StatusInfo::~StatusInfo(){
     delete firstLayout;
     delete secondLayout;
     delete mainLayout;
+
 }

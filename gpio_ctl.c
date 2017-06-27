@@ -15,7 +15,8 @@
 
 static int gpios[GPIO_NR] = {
 	80,	81, 82, 83,   193, 192, 178, 177,
-	200, 33, 34, 35,  36, 37, 38, 39
+    200, 33, 34, 35,  36, 37, 38, 39,
+    95
 };
 
 int write_cmd(const char *file, const char *cmd)

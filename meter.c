@@ -892,3 +892,12 @@ int in_out_resis_stop(void)
 	DEBUG("stop in out messure.\n");
 	return stop_ad_convert(ad7124_handler, &in_out_resis_param);
 }
+
+int self_test_start()
+{
+    return 0;
+}
+int self_test_stop()
+{
+    return 0;
+}

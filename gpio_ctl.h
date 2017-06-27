@@ -13,7 +13,7 @@ extern "C" {
 
 #endif
 
-#define GPIO_NR 16
+#define GPIO_NR 17
 /* GPIO  bank NR IMX_GPIO_NR(x,y) == 32*(x-1)+y
  * GPIO0 3 16	80
  * GPIO1 3 17	81
@@ -50,6 +50,7 @@ extern "C" {
 #define GPIO13	13
 #define GPIO14	14
 #define GPIO15	15
+#define GPIO16 16 //shutdown
 int set_gpio_value(int gpio, int value);
 
 #ifdef __cplusplus

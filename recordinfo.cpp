@@ -12,7 +12,7 @@
 #include <QString>
 #include <iostream>
 #include <QDateTime>
-
+#include <QTextCodec>
 using namespace std;
  void RecordInfo::refresh_time()
  {
@@ -143,6 +143,7 @@ void RecordInfo::save2() {
         return;
     }
     QTextStream txtOutput(&f);
+    txtOutput.setCodec(QTextCodec::codecForName("utf8"));
     txtOutput<<year->text()<<" "<<month->text()<<" "<<day->text()<<" "
                  <<hour->text()<<" "<<minute->text()<<endl;
     txtOutput<<SINLabel->text()<<": " << SINEdit->text()<<endl;

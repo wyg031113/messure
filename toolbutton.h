@@ -27,6 +27,4 @@ protected:
 
 #endif // TOOLBUTTON_H
 
-/*
-  电脑体检 木马查杀 漏洞修复 系统修复等
-*/
+

@@ -19,6 +19,7 @@ public:
         INS_RES,
         TEMPERATURE,
         PRESSURE,
+        SELF_TEST,
         MeterType_NR
     };
     ~CollectionThread();
@@ -45,6 +46,7 @@ public slots:
     void testTemperature();
     void testVoltage();
     void testPressure();
+    void testSelf();
     static void finish();
 
 };

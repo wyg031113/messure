@@ -12,6 +12,7 @@ public:
     explicit StatusInfo(QWidget *parent=0);
     ~StatusInfo();
 private:
+    QRadioButton *selfTestBtn;
     QRadioButton *bridgeResistorBtn;
     QRadioButton *insulationResistorBtn;
     QRadioButton *temperatureBtn;

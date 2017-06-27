@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
    // QFont qf(QString("WenQuanYi Zen Hei"));
      QFont qf(QString("SimSun"));
     cout<<"QTFonstSize:"<<qf.pointSize()<<endl;
-    qf.setPointSize(12);
+    //qf.setPointSize(12);
     app.setFont(qf);
     QFont font;
     qDebug()<<font.family();

@@ -19,7 +19,7 @@ signals:
     void showSkin();//点击换肤按钮
 
 public slots:
-
+    void quit_main();
 protected:
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);

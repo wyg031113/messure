@@ -190,6 +190,9 @@ int in_out_resis_stop(void);
  */
 int in_out_resis_mesure(double u1, double *in_resis, double *out_resis);
 
+int self_test_start();
+int self_test_stop();
+
 #ifdef __cplusplus
 
 }

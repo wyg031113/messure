@@ -14,6 +14,7 @@ CollectionThread::start_stop_fun_t CollectionThread::start_funs[MeterType_NR] =
     resistance_start,
     temperature_start,
     pressure_start,
+    self_test_start,
 };
 CollectionThread::start_stop_fun_t CollectionThread::stop_funs[MeterType_NR] =
 {
@@ -21,6 +22,7 @@ CollectionThread::start_stop_fun_t CollectionThread::stop_funs[MeterType_NR] =
     resistance_stop,
     temperature_stop,
     pressure_stop,
+    self_test_stop,
 };
 CollectionThread::CollectionThread()
 {
@@ -58,15 +60,20 @@ void CollectionThread::run() {
             if(state != last_state){
                 last_state = state;
                 i = 0;
-                int ret = start_funs[state]();
-                if(ret < 0){
-                    qDebug()<<" NotStarted:state:"<<state;
-                 }
+                if(start_funs[state] != NULL){
+                    int ret = start_funs[state]();
+                    if(ret < 0){
+                        qDebug()<<" NotStarted:state:"<<state;
+                     }
+                }else{
+                    qDebug()<<"warning: start_funs is NULL!";
+                }
                 bStart = true;
             }
             i++;
-
-           if(state == IN_OUT_RESIS) {
+            if(state == SELF_TEST){
+                str = "设备自检中" + QString::number(i);
+            }else  if(state == IN_OUT_RESIS) {
                double din, dout;
                int ret;
                 ret = in_out_resis_mesure(3.31, &din, &dout);
@@ -81,6 +88,7 @@ void CollectionThread::run() {
                double ins_res;
                //读取绝缘电阻
                int ret = resistance_mesure(&ins_res);
+               str = "";
                if(ret < 0){
                    str = "读取绝缘电阻 失败!\n";
                }
@@ -90,6 +98,7 @@ void CollectionThread::run() {
                int ret;
                double temp;
                //读取测点温度
+               str = "";
                ret = temperature_mesure(3.13,  get_temp_tab(), get_ntemp(), &temp);
                if(ret < 0){
                    str = "读取测点温度 失败!\n";
@@ -98,13 +107,14 @@ void CollectionThread::run() {
                          UiUtils::double2string(temp) + QString(" 摄氏度");
 
 
-           } else if (state == 4) {
+           } else if (state == 5) {
                 //读取电压值
                str = "读取电压值" + QString::number(i);
            } else if (state == PRESSURE) {
                int ret;
                double pressure;
                //读取压力值
+               str = "";
                ret = pressure_mesure(&pressure);
                if(ret < 0){
                    str = "读取压力值 失败!\n";
@@ -121,7 +131,8 @@ void CollectionThread::run() {
                 if(state < 0 || state >= CollectionThread::MeterType_NR){
                     qDebug()<<"in start work:Eror state:"<<state;
                 }else{
-                    stop_funs[state]();
+                    if(stop_funs[state])
+                        stop_funs[state]();
                 }
             }
             push.wait(&mutex);
@@ -153,8 +164,9 @@ void CollectionThread::stop2() {
 void CollectionThread::testBridgeResistor() {state = IN_OUT_RESIS;}
 void CollectionThread::testInsulationResistor() {state = INS_RES;}
 void CollectionThread::testTemperature(){state = TEMPERATURE;}
-void CollectionThread::testVoltage() {state = 4;}
+void CollectionThread::testVoltage() {state = 5;}
 void CollectionThread::testPressure() {state = PRESSURE;}
+void CollectionThread::testSelf(){state = SELF_TEST;}
 void CollectionThread::finish()
 {
     qDebug()<<"Finish";
