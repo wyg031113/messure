@@ -25,14 +25,16 @@ QString UiUtils::double2string(double d) {
     return QString::number(d, 'f', 2);
 }
 
-const char * UiUtils::dev = "/dev/loop0";
+const char * UiUtils::dev = "/dev/sda1";
 const char * UiUtils::mount_point = "/usb";
-const char * UiUtils::filsys_type = "ext3";
+const char * UiUtils::filsys_type = "vfat";
 const char * UiUtils::data_dir = "/data/";
 bool UiUtils::mount_usb()
 {
     QFile dir(dev);
     QDir usb(mount_point);
+    QDir ddir(data_dir);
+    ddir.mkdir(data_dir);
     if (!dir.exists()){
         QMessageBox::warning(0, "文件拷贝", "未发现u盘!");
         return false;

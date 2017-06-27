@@ -8,8 +8,8 @@ toolWidget::toolWidget(QWidget *parent) :
     QPalette palette;
     palette.setColor(QPalette::WindowText,Qt::white);
     this->setPalette(palette);
-    tbTiJian=new toolButton(":/img/toolWidget/status.png",tr("参数设置"), 0);
-    tbMuMa=new toolButton(":/img/toolWidget/config.png",tr("结果录入"), 1);
+    tbTiJian=new toolButton(":/img/toolWidget/status.png",tr("开始测量"), 0);
+    tbMuMa=new toolButton(":/img/toolWidget/config.png",tr("参数设置"), 1);
     tbLouDong=new toolButton(":/img/toolWidget/export.png",tr("文件导出"), 2);
 
     QLabel *logoLabel=new QLabel;

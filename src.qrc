@@ -1,17 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>img/skin/blackPoint.jpg</file>
-        <file>img/skin/blackPointSmall.jpg</file>
-        <file>img/skin/blueSky.jpg</file>
-        <file>img/skin/blueSkySmall.jpg</file>
-        <file>img/skin/greenWorld.jpg</file>
-        <file>img/skin/greenWorldSmall.jpg</file>
-        <file>img/skin/oldWood.jpg</file>
-        <file>img/skin/oldWoodSmall.jpg</file>
-        <file>img/skin/pinkLove.jpg</file>
-        <file>img/skin/pinkLoveSmall.jpg</file>
-        <file>img/skin/redThunder.jpg</file>
-        <file>img/skin/redThunderSmall.jpg</file>
         <file>img/sysButton/sys_button_close.png</file>
         <file>img/sysButton/sys_button_max.png</file>
         <file>img/sysButton/sys_button_min.png</file>
@@ -31,5 +19,15 @@
         <file>img/warning.png</file>
         <file>img/skin/oldWood.png</file>
         <file>img/skin/oldWoodSmall.png</file>
+        <file>img/skin/redThunderSmall.png</file>
+        <file>img/skin/redThunder.png</file>
+        <file>img/skin/pinkLoveSmall.png</file>
+        <file>img/skin/pinkLove.png</file>
+        <file>img/skin/greenWorldSmall.png</file>
+        <file>img/skin/greenWorld.png</file>
+        <file>img/skin/blueSkySmall.png</file>
+        <file>img/skin/blueSky.png</file>
+        <file>img/skin/blackPointSmall.png</file>
+        <file>img/skin/blackPoint.png</file>
     </qresource>
 </RCC>

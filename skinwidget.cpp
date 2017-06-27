@@ -11,9 +11,9 @@ skinWidget::skinWidget(QString picName,QWidget *parent) :bkPicName(picName),
 {
     QSignalMapper *signalMapper=new QSignalMapper(this);
     QStringList bkPicName;
-    bkPicName<<":/img/skin/blackPoint.jpg"<<":/img/skin/blueSky.jpg"
-               <<":/img/skin/greenWorld.jpg"<<":/img/skin/oldWood.jpg"<<
-               ":/img/skin/pinkLove.jpg"<<":/img/skin/redThunder.jpg"<<":/img/skin/sixYears.jpg";
+    bkPicName<<":/img/skin/blackPoint.png"<<":/img/skin/blueSky.png"
+               <<":/img/skin/greenWorld.png"<<":/img/skin/oldWood.png"<<
+               ":/img/skin/pinkLove.png"<<":/img/skin/redThunder.png"<<":/img/skin/sixYears.png";
     QStringList tip;
     tip<<tr("优雅爵士")<<tr("天空蓝")<<
              tr("青青世界")<<tr("古典木纹")<<tr("粉色之恋")<<tr("红色惊雷");
@@ -25,7 +25,7 @@ skinWidget::skinWidget(QString picName,QWidget *parent) :bkPicName(picName),
     {
         QPushButton *btn=new QPushButton;
        // btn->setFlat(true);
-        QIcon icon(bkPicName[i].left(bkPicName[i].indexOf("."))+"Small.jpg");
+        QIcon icon(bkPicName[i].left(bkPicName[i].indexOf("."))+"Small.png");
         btn->setIcon(icon);
         btn->setIconSize(QSize(97,62));
         btn->setToolTip(tip[i]);

@@ -9,6 +9,7 @@
 #include <QFile>
 #include <QProcess>
 #include <QStringList>
+#include <QDebug>
 statusWidget::statusWidget(QWidget *parent) :
     QWidget(parent)
 {
@@ -43,17 +44,30 @@ void statusWidget::showUpdateInfo() {
         return;
     }
    QString app_dir = QApplication::applicationDirPath();
-   QString app_file = QApplication::applicationFilePath();
-   QString app_name  = QApplication::applicationName();
+   QString app_file = "/opt/messure/messure";  //QApplication::applicationFilePath();
+   QString app_name  = "messure";     // QApplication::applicationName();
    QString src = QString(UiUtils::mount_point) + QString("/")+QString(app_name);
+   qDebug()<<"Srcfile:"<<src;
    QFile  dst(app_file);
-    if(dst.remove() && QFile::copy(src, app_file)){
+   QFile src_file(src);
+   if(!src_file.exists()){
+       QMessageBox::information(0,"更新失败", "没有发现新版本!");
+   }else{
+       dst.rename("messure.bak");
+    if(QFile::copy(src, app_file)){
          QMessageBox::information(0,"版本更新", "版本更新成功!\n点击确定重新启动本程序!");
          qApp->quit();
-         QProcess::startDetached(app_file, QApplication::arguments());
+         QStringList args;
+         args.append("-qws");
+         QProcess::startDetached(app_file, args);
+         dst.remove();
     }else{
+        dst.rename(app_name);
          QMessageBox::information(0,"更新失败", "没有发现新版本!");
+         QFile bak_file("/opt/messure/messure.bak");
+         bak_file.remove();
     }
+   }
 
     UiUtils::umount_usb();
 }
