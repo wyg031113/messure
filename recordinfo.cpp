@@ -243,6 +243,9 @@ RecordInfo::~RecordInfo() {
     delete day;
     delete hour;
     delete minute;
+    delete apply_btn;
+    delete load_btn;
+    qDebug()<<"delete delete delete .....";
 }
 
 
