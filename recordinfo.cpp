@@ -182,7 +182,7 @@ void RecordInfo::load()
 {
     qDebug()<<"Load pk pb";
     int ret;
-    EEPROM_DATA_t val = {0};
+    EEPROM_DATA_t val = {{0},0,0};
     //for test
     /*val.pb = 123.45;
     val.pk = 678.90;

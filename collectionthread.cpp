@@ -104,7 +104,7 @@ void CollectionThread::run() {
             }else  if(state == IN_OUT_RESIS) {
                double din, dout;
                int ret;
-                ret = in_out_resis_mesure(3.31, &din, &dout);
+                ret = in_out_resis_mesure(UiUtils::messure_data.self_test_voltage, &din, &dout);
                 str = "";
                 if(ret < 0){
                     str = "读取电桥电阻 失败! \n";
@@ -113,7 +113,10 @@ void CollectionThread::run() {
                str += QString::number(i) + QString(".读取电桥电阻:\n") +
                       QString("输入电阻:") + UiUtils::double2string(din) +
                       QString("千欧\n输出电阻: ") +
-                      UiUtils::double2string(dout) + QString("千欧 ");
+                      UiUtils::double2string(dout) + QString("千欧\n");
+               str += QString("自检电压： ") +
+                      UiUtils::double2string(UiUtils::messure_data.self_test_voltage) +
+                      QString("V");
                in_out_resis_str = str;
                UiUtils::messure_data.ins_resis = din;
                UiUtils::messure_data.out_resis = dout;

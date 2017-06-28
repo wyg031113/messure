@@ -1031,7 +1031,7 @@ int zero_voltage_start()
     ret =  start_ad_convert(ad7124_handler, &pressure_param2);
     if(ret < 0){
         INFO("start ad  zero voltage param1 failed!\n");
-        return -1;
+        goto failed;
     }
     return ret;
 failed:
@@ -1059,7 +1059,7 @@ int zero_voltage_messure(double *d)
         INFO("average voltage failed!\n");
         return -1;
     }
-    *d = voltage;
+    *d = voltage/(279*6.1);
     DEBUG("voltage:%e\n", *d);
     return SUCCESS;
 }

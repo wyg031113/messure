@@ -64,7 +64,7 @@ private slots:
     //定时器处理退格键
     void reClicked();
 
-    void on_btnOther1_clicked();
+
 
 private:
     Ui::frmInput *ui;
