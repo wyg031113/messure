@@ -86,7 +86,7 @@ void CollectionThread::run() {
                 double U0;
                 int ret;
                  //读取自检电压
-                ret = self_test_messure(&U0);
+                ret = self_test_measure(&U0);
                 str  = "";
                 if(ret < 0){
                     str = "读取自检电压 失败! \n";
@@ -104,7 +104,7 @@ void CollectionThread::run() {
             }else  if(state == IN_OUT_RESIS) {
                double din, dout;
                int ret;
-                ret = in_out_resis_mesure(UiUtils::messure_data.self_test_voltage, &din, &dout);
+                ret = in_out_resis_measure(UiUtils::messure_data.self_test_voltage, &din, &dout);
                 str = "";
                 if(ret < 0){
                     str = "读取电桥电阻 失败! \n";
@@ -123,7 +123,7 @@ void CollectionThread::run() {
            } else if (state == INS_RES) {
                double ins_res;
                //读取绝缘电阻
-               int ret = resistance_mesure(&ins_res);
+               int ret = resistance_measure(&ins_res);
                str = "";
                if(ret < 0){
                    str = "读取绝缘电阻 失败!\n";
@@ -137,7 +137,7 @@ void CollectionThread::run() {
                double temp;
                //读取测点温度
                str = "";
-               ret = temperature_mesure(UiUtils::messure_data.self_test_voltage,
+               ret = temperature_measure(UiUtils::messure_data.self_test_voltage,
                                         get_temp_tab(), get_ntemp(), &temp);
                if(ret < 0){
                    str = "读取测点温度 失败!\n";
@@ -153,7 +153,7 @@ void CollectionThread::run() {
                 double U0;
                 int ret;
                  //读取零点电压
-                ret = zero_voltage_messure(&U0);
+                ret = zero_voltage_measure(&U0);
                 str  = "";
                 if(ret < 0){
                     str = "读取零点电压 失败! \n";
@@ -168,7 +168,7 @@ void CollectionThread::run() {
                double pressure;
                //读取压力值
                str = "";
-               ret = pressure_mesure(UiUtils::messure_data.pk,
+               ret = pressure_measure(UiUtils::messure_data.pk,
                                      UiUtils::messure_data.pb,&pressure);
                if(ret < 0){
                    str = "读取压力值 失败!\n";

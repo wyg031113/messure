@@ -30,7 +30,7 @@ const char * UiUtils::mount_point = "/usb";
 const char * UiUtils::filsys_type = "vfat";
 const char * UiUtils::data_dir = "/data/";
 const char * UiUtils::eeprom_file = "/eeprom.dat";
-MessureData UiUtils::messure_data;
+MeasureData UiUtils::messure_data;
 bool UiUtils::mount_usb()
 {
     QFile dir(dev);

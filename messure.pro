@@ -60,7 +60,7 @@ HEADERS  += mainwidget.h \
     debug.h \
     meter.h \
     gpio_ctl.h \
-    messure_data.h
+    measure_data.h
 RESOURCES += \
     src.qrc
 

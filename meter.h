@@ -73,7 +73,7 @@ int resistance_start();
  * d: 用于返回电阻值
  * return: 成功SUCCESS
  */
-int resistance_mesure(double *d);
+int resistance_measure(double *d);
 
 
 /*
@@ -163,7 +163,7 @@ int temperature_start();
  * d: 用于返回温度值
  * return: 成功SUCCESS
  */
-int temperature_mesure(double v1, temperature_tab_t *tabs, int n, double *d);
+int temperature_measure(double v1, temperature_tab_t *tabs, int n, double *d);
 
 /*
  *停止AD通道
@@ -183,7 +183,7 @@ int pressure_start();
  * d: 用于返回压力值
  * return: 成功SUCCESS
  */
-int pressure_mesure(double pk, double pb, double *d);
+int pressure_measure(double pk, double pb, double *d);
 
 /*
  *停止AD通道
@@ -220,7 +220,7 @@ int in_out_resis_stop(void);
  * out_resis:输出阻抗
  * return:成功：0，失败：-1
  */
-int in_out_resis_mesure(double u1, double *in_resis, double *out_resis);
+int in_out_resis_measure(double u1, double *in_resis, double *out_resis);
 
 /***************************************************************
  * 自检
@@ -237,7 +237,7 @@ int self_test_start();
  * U0,返回自检电压
  * return: 成功返回0，失败返回-1
  */
-int self_test_messure(double *U0);
+int self_test_measure(double *U0);
 
 /*
  * 自检停止
@@ -260,7 +260,7 @@ int zero_voltage_start();
  * d: 用于返回零点电压
  * return: 成功SUCCESS
  */
-int zero_voltage_messure(double *d);
+int zero_voltage_measure(double *d);
 
 /*
  * 自检零点电压测量

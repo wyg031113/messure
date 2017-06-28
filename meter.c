@@ -371,7 +371,7 @@ int resistance_start()
  * d: 用于返回电阻值
  * return: 成功SUCCESS
  */
-int resistance_mesure(double *d)
+int resistance_measure(double *d)
 {
 	int i, n;
 	int ret;
@@ -629,7 +629,7 @@ int temperature_start()
  * d: 用于返回温度值
  * return: 成功SUCCESS
  */
-int temperature_mesure(double u1, temperature_tab_t *tabs, int n, double *d)
+int temperature_measure(double u1, temperature_tab_t *tabs, int n, double *d)
 {
 	int i, nval;
 	int ret;
@@ -738,7 +738,7 @@ failed:
  * pb: 压力参数pb
  * return: 成功SUCCESS
  */
-int pressure_mesure(double pk, double pb, double *d)
+int pressure_measure(double pk, double pb, double *d)
 {
 	int i;
 	double voltage1 = 0;
@@ -881,7 +881,7 @@ failed1:
  * out_resis:输出阻抗
  * return:成功：0，失败：-1
  */
-int in_out_resis_mesure(double u1, double *in_resis, double *out_resis)
+int in_out_resis_measure(double u1, double *in_resis, double *out_resis)
 {
 	int i, n;
 	int ret;
@@ -940,7 +940,7 @@ int in_out_resis_mesure(double u1, double *in_resis, double *out_resis)
 int in_out_resis_stop(void)
 {
 	in_out_stop_all_gpio();
-	DEBUG("stop in out messure.\n");
+    DEBUG("stop in out measure.\n");
 	return stop_ad_convert(ad7124_handler, &in_out_resis_param);
 }
 
@@ -979,7 +979,7 @@ failed1:
  * U0,返回自检电压
  * return: 成功返回0，失败返回-1
  */
-int self_test_messure(double *U0)
+int self_test_measure(double *U0)
 {
     int i, n;
     int ret;
@@ -1043,7 +1043,7 @@ failed:
  * d: 用于返回零点电压
  * return: 成功SUCCESS
  */
-int zero_voltage_messure(double *d)
+int zero_voltage_measure(double *d)
 {
     int i, n;
     int ret;
