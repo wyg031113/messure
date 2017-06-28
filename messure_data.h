@@ -17,5 +17,6 @@ public:
     double pb;
 };
 
+
 #endif // MESSURE_DATA_H
 

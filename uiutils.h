@@ -20,6 +20,7 @@ public:
     static  const char *mount_point;
     static const char *filsys_type;
     static const char *data_dir;
+    static const char *eeprom_file;
     static MessureData messure_data;
 };
 

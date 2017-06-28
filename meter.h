@@ -26,6 +26,15 @@ typedef struct temperature_tab
 	double temp;
 }temperature_tab_t;
 
+#define SNO_SIZE 16
+struct EEPROM_DATA
+{
+    char sno[SNO_SIZE];
+    double pk;
+    double pb;
+}__attribute__((packed));
+typedef struct EEPROM_DATA EEPROM_DATA_t;
+
 /*
  *初始化AD7124 打开SPI，关闭默认已经开启的通道0
  */
@@ -106,6 +115,21 @@ int read_eeprom(const char *fname, char *buf, size_t buf_len, size_t offset);
  */
 int write_eeprom(const char *fname, const char *buf, size_t buf_len, size_t offset);
 
+/*
+ * 从EEPROM中读取发动机编号、压力参数pk,pb.
+ * fname:EEPROM文件名
+ * val:输出读取的值
+ * return:成功0，失败-1.
+ */
+int read_eeprom_data(const char *fname, EEPROM_DATA_t *val);
+
+/*
+ * 写入EEPROM发动机编号、压力参数pk,pb.
+ * fname:EEPROM文件名
+ * val:要写入的值
+ * return:成功0，失败-1.
+ */
+int write_eeprom_data(const char *fname, EEPROM_DATA_t *val);
 /**************************************************************************************
  * 温度测量
  **************************************************************************************/

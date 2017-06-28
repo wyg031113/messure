@@ -14,6 +14,8 @@
 #include <QDateTime>
 #include <QTextCodec>
 #include <QDir>
+#include <QMessageBox>
+#include "meter.h"
 using namespace std;
  void RecordInfo::refresh_time()
  {
@@ -179,6 +181,27 @@ void RecordInfo::apply()
 void RecordInfo::load()
 {
     qDebug()<<"Load pk pb";
+    int ret;
+    EEPROM_DATA_t val = {0};
+    //for test
+    /*val.pb = 123.45;
+    val.pk = 678.90;
+    strcpy(val.sno,"1111-2222");
+    write_eeprom_data(UiUtils::eeprom_file, &val);
+    */
+    ret = read_eeprom_data(UiUtils::eeprom_file, &val);
+    if(ret < 0){
+        QMessageBox::critical(NULL, "失败", "读取EEPROM失败！");
+        return;
+    }else{
+        val.sno[SNO_SIZE-1] = '\0';
+        UiUtils::messure_data.pk = val.pk;
+        UiUtils::messure_data.pb = val.pb;
+        EINEdit->setText(val.sno);
+        pkEdit->setText(UiUtils::double2string(val.pk));
+        pbEdit->setText(UiUtils::double2string(val.pb));
+
+    }
 }
 
 void RecordInfo::save2() {

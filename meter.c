@@ -464,6 +464,7 @@ int read_eeprom(const char *fname, char *buf, size_t buf_len, size_t offset)
 {
 	int fd;
 	int ret;
+    int rbs = 0;
 	fd = open(fname, O_RDONLY);
 	if(fd < 0){
 		INFO("Open faile eeprom file %s failed:%s\n", fname, strerror(errno));
@@ -474,7 +475,13 @@ int read_eeprom(const char *fname, char *buf, size_t buf_len, size_t offset)
 		close(fd);
 		return -1;
 	}
-	ret = read(fd, buf, buf_len);
+    while(buf_len > 0){
+        ret = read(fd, buf + rbs, buf_len);
+        if(ret <= 0)
+            break;
+        buf_len -= ret;
+        rbs += ret;
+    }
 	close(fd);
 	return ret;
 }
@@ -491,7 +498,8 @@ int write_eeprom(const char *fname, const char *buf, size_t buf_len, size_t offs
 {
 	int fd;
 	int ret;
-	fd = open(fname, O_WRONLY);
+    int wbs;
+    fd = open(fname, O_WRONLY|O_CREAT, 0666);
 	if(fd < 0){
 		INFO("Open faile eeprom file %s failed:%s\n", fname, strerror(errno));
 		return fd;
@@ -501,12 +509,44 @@ int write_eeprom(const char *fname, const char *buf, size_t buf_len, size_t offs
 		close(fd);
 		return -1;
 	}
-	ret = write(fd, buf, buf_len);
+    while(buf_len > 0){
+        ret = write(fd, buf + wbs, buf_len);
+        if(ret < 0)
+            break;
+        buf_len -= ret;
+        wbs += ret;
+    }
 	close(fd);
 	return ret;
 }
 
+/*
+ * 从EEPROM中读取发动机编号、压力参数pk,pb.
+ * fname:EEPROM文件名
+ * val:输出读取的值
+ * return:成功0，失败-1.
+ */
+int read_eeprom_data(const char *fname, EEPROM_DATA_t *val)
+{
+    if(read_eeprom(fname, val, sizeof(EEPROM_DATA_t), 0) != sizeof(EEPROM_DATA_t))
+        return -1;
+    else
+        return 0;
+}
 
+/*
+ * 写入EEPROM发动机编号、压力参数pk,pb.
+ * fname:EEPROM文件名
+ * val:要写入的值
+ * return:成功0，失败-1.
+ */
+int write_eeprom_data(const char *fname, EEPROM_DATA_t *val)
+{
+    if(write_eeprom(fname, val, sizeof(EEPROM_DATA_t), 0) != sizeof(EEPROM_DATA_t))
+        return -1;
+    else
+        return 0;
+}
 /**************************************************************************************
  * 温度测量
  **************************************************************************************/
