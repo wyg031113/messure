@@ -213,6 +213,29 @@ int self_test_messure(double *U0);
  */
 int self_test_stop();
 
+
+/**************************************************************************************
+ * 零点电压
+ **************************************************************************************/
+/*
+ * 启动AD通道
+ * return:成功：0，失败：-1。
+ */
+int zero_voltage_start();
+
+/*
+ * 获得零点电压
+ * d: 用于返回零点电压
+ * return: 成功SUCCESS
+ */
+int zero_voltage_messure(double *d);
+
+/*
+ * 自检零点电压测量
+ * return: 成功返回0，失败返回-1
+ */
+int zero_voltage_stop();
+
 #ifdef __cplusplus
 
 }

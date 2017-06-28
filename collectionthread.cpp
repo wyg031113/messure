@@ -15,6 +15,7 @@ CollectionThread::start_stop_fun_t CollectionThread::start_funs[MeterType_NR] =
     temperature_start,
     pressure_start,
     self_test_start,
+    zero_voltage_start,
 };
 CollectionThread::start_stop_fun_t CollectionThread::stop_funs[MeterType_NR] =
 {
@@ -23,6 +24,7 @@ CollectionThread::start_stop_fun_t CollectionThread::stop_funs[MeterType_NR] =
     temperature_stop,
     pressure_stop,
     self_test_stop,
+    zero_voltage_stop,
 };
 CollectionThread::CollectionThread()      //程序启动时调用初始化函数
 {
@@ -123,9 +125,18 @@ void CollectionThread::run() {
                          UiUtils::double2string(temp) + QString(" 摄氏度");
 
 
-           } else if (state == 5) {
-                //读取电压值
-               str = "读取电压值" + QString::number(i);
+           } else if (state == ZERO_VOLTAGE) {
+                double U0;
+                int ret;
+                 //读取零点电压
+                ret = zero_voltage_messure(&U0);
+                str  = "";
+                if(ret < 0){
+                    str = "读取零点电压 失败! \n";
+                }
+
+               str += QString::number(i) + QString(".零点电压: ") +
+                       UiUtils::double2string(U0) + QString(" V ");
            } else if (state == PRESSURE) {
                int ret;
                double pressure;
@@ -181,7 +192,7 @@ void CollectionThread::stop2() {
 void CollectionThread::testBridgeResistor() {state = IN_OUT_RESIS;}
 void CollectionThread::testInsulationResistor() {state = INS_RES;}
 void CollectionThread::testTemperature(){state = TEMPERATURE;}
-void CollectionThread::testVoltage() {state = 5;}
+void CollectionThread::testVoltage() {state = ZERO_VOLTAGE;}
 void CollectionThread::testPressure() {state = PRESSURE;}
 void CollectionThread::testSelf(){state = SELF_TEST;}
 void CollectionThread::finish()

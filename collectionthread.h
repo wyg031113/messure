@@ -20,6 +20,7 @@ public:
         TEMPERATURE,
         PRESSURE,
         SELF_TEST,
+        ZERO_VOLTAGE,
         MeterType_NR
     };
     ~CollectionThread();
