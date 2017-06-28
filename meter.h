@@ -159,13 +159,21 @@ int pressure_start();
  * d: 用于返回压力值
  * return: 成功SUCCESS
  */
-int pressure_mesure(double *d);
+int pressure_mesure(double pk, double pb, double *d);
 
 /*
  *停止AD通道
  */
 int pressure_stop();
 
+/*
+ * 转换压力到-10度下的压力
+ * PT：当前压力
+ * T：当前温度
+ * PTm10:输出-10度时的压力
+ * return: success
+ */
+int PT2PTm10(double PT, double T, double *PTm10);
 
 /**********************************************************
  * 输入输出阻抗测量

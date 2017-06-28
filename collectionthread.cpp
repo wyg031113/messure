@@ -8,6 +8,14 @@ bool CollectionThread::working = false;
 bool volatile CollectionThread::bFinish = false;
 QWaitCondition CollectionThread::push;
 QMutex CollectionThread::mutex;
+
+QString CollectionThread::self_test_str;
+QString CollectionThread::in_out_resis_str;
+QString CollectionThread::temperature_str;
+QString CollectionThread::ins_resis_str;
+QString CollectionThread::zero_voltage_str;
+QString CollectionThread::pressure_str;
+
 CollectionThread::start_stop_fun_t CollectionThread::start_funs[MeterType_NR] =
 {
     in_out_resis_start,
@@ -91,6 +99,8 @@ void CollectionThread::run() {
                }else{
                    str += "不合格";
                }
+               self_test_str = str;
+               UiUtils::messure_data.self_test_voltage = U0;
             }else  if(state == IN_OUT_RESIS) {
                double din, dout;
                int ret;
@@ -100,8 +110,13 @@ void CollectionThread::run() {
                     str = "读取电桥电阻 失败! \n";
                 }
                //读取电桥电阻
-               str += QString::number(i) + QString(".读取电桥电阻:\n") + QString("输入电阻:") + UiUtils::double2string(din) +
-                        QString("千欧\n输出电阻: ") + UiUtils::double2string(dout) + QString("千欧 ");
+               str += QString::number(i) + QString(".读取电桥电阻:\n") +
+                      QString("输入电阻:") + UiUtils::double2string(din) +
+                      QString("千欧\n输出电阻: ") +
+                      UiUtils::double2string(dout) + QString("千欧 ");
+               in_out_resis_str = str;
+               UiUtils::messure_data.ins_resis = din;
+               UiUtils::messure_data.out_resis = dout;
            } else if (state == INS_RES) {
                double ins_res;
                //读取绝缘电阻
@@ -112,18 +127,24 @@ void CollectionThread::run() {
                }
                 str +=  QString::number(i) + QString(".绝缘电阻:") +
                            UiUtils::double2string(ins_res) + QString(" 兆欧");
+                ins_resis_str = str;
+                UiUtils::messure_data.ins_resis = ins_res;
            } else if (state ==TEMPERATURE) {
                int ret;
                double temp;
                //读取测点温度
                str = "";
-               ret = temperature_mesure(3.13,  get_temp_tab(), get_ntemp(), &temp);
+               ret = temperature_mesure(UiUtils::messure_data.self_test_voltage,
+                                        get_temp_tab(), get_ntemp(), &temp);
                if(ret < 0){
                    str = "读取测点温度 失败!\n";
                }
                str += QString::number(i) + QString(".测点温度:")  +
-                         UiUtils::double2string(temp) + QString(" 摄氏度");
-
+                         UiUtils::double2string(temp) + QString(" 摄氏度\n");
+               str += QString("自检电压: ") + UiUtils::double2string(UiUtils::messure_data.self_test_voltage)
+                      + QString("V");
+               temperature_str = str;
+               UiUtils::messure_data.temperature = temp;
 
            } else if (state == ZERO_VOLTAGE) {
                 double U0;
@@ -137,20 +158,38 @@ void CollectionThread::run() {
 
                str += QString::number(i) + QString(".零点电压: ") +
                        UiUtils::double2string(U0) + QString(" V ");
+               zero_voltage_str = str;
+               UiUtils::messure_data.zero_voltage = U0;
            } else if (state == PRESSURE) {
                int ret;
                double pressure;
                //读取压力值
                str = "";
-               ret = pressure_mesure(&pressure);
+               ret = pressure_mesure(UiUtils::messure_data.pk,
+                                     UiUtils::messure_data.pb,&pressure);
                if(ret < 0){
                    str = "读取压力值 失败!\n";
                }
-               str += QString::number(i) + QString(".压力值:")  +
-                         UiUtils::double2string(pressure) + QString(" 帕");
+               double press_tm10 = 0;
+               PT2PTm10(pressure, UiUtils::messure_data.temperature, &press_tm10);
+               str += QString::number(i) + QString(".压力:")  +
+                      UiUtils::double2string(pressure) + QString(" 帕\n");
+               str += QString("负10摄氏度下的压力:")  +
+                      UiUtils::double2string(pressure) + QString(" 帕\n");
+               str += QString("测点温度:")  +
+                      UiUtils::double2string(UiUtils::messure_data.temperature) +
+                      QString(" 摄氏度\n");
+               str += QString("压力参数pk:") +
+                      UiUtils::double2string(UiUtils::messure_data.pk) +
+                      QString("\n") + QString("压力参数pb:") +
+                      UiUtils::double2string(UiUtils::messure_data.pb);
+
+               pressure_str = str;
+               UiUtils::messure_data.pressure = pressure;
+               UiUtils::messure_data.pressure_tm10 = press_tm10;
            }
            emit modify(str);
-            sleep(1);
+           sleep(1);
         }
         else {
             if(!bFinish && bStart){
@@ -189,12 +228,36 @@ void CollectionThread::stop2() {
     working = false;
 }
 
-void CollectionThread::testBridgeResistor() {state = IN_OUT_RESIS;}
-void CollectionThread::testInsulationResistor() {state = INS_RES;}
-void CollectionThread::testTemperature(){state = TEMPERATURE;}
-void CollectionThread::testVoltage() {state = ZERO_VOLTAGE;}
-void CollectionThread::testPressure() {state = PRESSURE;}
-void CollectionThread::testSelf(){state = SELF_TEST;}
+void CollectionThread::testBridgeResistor()
+{
+    state = IN_OUT_RESIS;
+    emit modify(in_out_resis_str);
+}
+void CollectionThread::testInsulationResistor()
+{
+    state = INS_RES;
+    emit modify(ins_resis_str);
+}
+void CollectionThread::testTemperature()
+{
+    state = TEMPERATURE;
+    emit modify(temperature_str);
+}
+void CollectionThread::testVoltage()
+{
+    state = ZERO_VOLTAGE;
+    emit modify(zero_voltage_str);
+}
+void CollectionThread::testPressure()
+{
+    state = PRESSURE;
+    emit modify(pressure_str);
+}
+void CollectionThread::testSelf()
+{
+    state = SELF_TEST;
+    emit modify(self_test_str);
+}
 void CollectionThread::finish()
 {
     qDebug()<<"Finish";

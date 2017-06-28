@@ -4,7 +4,7 @@
 #include<QDesktopWidget>
 #include <QRect>
 #include <QString>
-
+#include "messure_data.h"
 class UiUtils
 {
 public:
@@ -20,6 +20,7 @@ public:
     static  const char *mount_point;
     static const char *filsys_type;
     static const char *data_dir;
+    static MessureData messure_data;
 };
 
 #endif // UIUTILS_H

@@ -5,6 +5,7 @@
 #include "infobean.h"
 #include<QWaitCondition>
 #include<QMutex>
+
 /*
   QThread类先term
 */
@@ -39,6 +40,12 @@ private:
     static volatile bool bFinish;
     static start_stop_fun_t start_funs[MeterType_NR];
     static start_stop_fun_t stop_funs[MeterType_NR];
+    static QString self_test_str;
+    static QString in_out_resis_str;
+    static QString ins_resis_str;
+    static QString temperature_str;
+    static QString zero_voltage_str;
+    static QString pressure_str;
 public slots:
     static void start2();
     static void stop2();

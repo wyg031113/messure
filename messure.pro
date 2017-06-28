@@ -59,7 +59,8 @@ HEADERS  += mainwidget.h \
     Communication.h \
     debug.h \
     meter.h \
-    gpio_ctl.h
+    gpio_ctl.h \
+    messure_data.h
 RESOURCES += \
     src.qrc
 

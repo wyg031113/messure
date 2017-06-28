@@ -627,7 +627,7 @@ int temperature_mesure(double u1, temperature_tab_t *tabs, int n, double *d)
 	}
 	
 	DEBUG("temperature voltage: %e temp:%f Rx:%f\n", voltage, *d, Rx);
-	return SUCCESS;
+    return ret;
 }
 
 /*
@@ -694,9 +694,11 @@ failed:
 /*
  * 获得压力值
  * d: 用于返回压力值
+ * pk: 压力参数pk
+ * pb: 压力参数pb
  * return: 成功SUCCESS
  */
-int pressure_mesure(double *d)
+int pressure_mesure(double pk, double pb, double *d)
 {
 	int i;
 	double voltage1 = 0;

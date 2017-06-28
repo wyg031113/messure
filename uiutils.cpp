@@ -29,6 +29,7 @@ const char * UiUtils::dev = "/dev/sda1";
 const char * UiUtils::mount_point = "/usb";
 const char * UiUtils::filsys_type = "vfat";
 const char * UiUtils::data_dir = "/data/";
+MessureData UiUtils::messure_data;
 bool UiUtils::mount_usb()
 {
     QFile dir(dev);
