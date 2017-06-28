@@ -13,6 +13,7 @@
 #include <iostream>
 #include <QDateTime>
 #include <QTextCodec>
+#include <QDir>
 using namespace std;
  void RecordInfo::refresh_time()
  {
@@ -136,22 +137,36 @@ RecordInfo::RecordInfo(QWidget *parent):
 void RecordInfo::save2() {
 
     QDateTime qdt = QDateTime::currentDateTime();
+    QDir qdata(UiUtils::data_dir);
+    qdata.mkdir(UiUtils::data_dir);
     QFile f(UiUtils::data_dir+QString("data")+qdt.toString("yyyyMMdd_hhmmss")+QString(".txt"));
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append))
     {
         qDebug() << "Open failed." << endl;
+        QMessageBox::critical(0, "失败", "文件保存失败!");
         return;
     }
     QTextStream txtOutput(&f);
     txtOutput.setCodec(QTextCodec::codecForName("utf8"));
     txtOutput<<year->text()<<" "<<month->text()<<" "<<day->text()<<" "
                  <<hour->text()<<" "<<minute->text()<<endl;
-    txtOutput<<SINLabel->text()<<": " << SINEdit->text()<<endl;
-    txtOutput<<EINLabel->text()<<": " << EINEdit->text()<<endl;
-    txtOutput<<TesterLabel->text()<<": "<<TesterEdit->text()<<endl;
-    txtOutput<<CircumstanceLabel->text()<<": "<<CircumstanceEdit->text()<<endl;
-    txtOutput<<HumidityLable->text()<<": "<<HumidityEdit->text()<<endl;
+    txtOutput<<SINLabel->text()<<" " << SINEdit->text()<<endl;
+    txtOutput<<EINLabel->text()<<" " << EINEdit->text()<<endl;
+    txtOutput<<TesterLabel->text()<<" "<<TesterEdit->text()<<endl;
+    txtOutput<<CircumstanceLabel->text()<<" "<<CircumstanceEdit->text()<<endl;
+    txtOutput<<HumidityLable->text()<<" "<<HumidityEdit->text()<<endl;
+    txtOutput<< QString("自检电压: ") << UiUtils::double2string(UiUtils::messure_data.self_test_voltage) << endl
+             << QString("输入阻抗: ") << UiUtils::double2string(UiUtils::messure_data.in_resis) << endl
+             << QString("输出阻抗: ") << UiUtils::double2string(UiUtils::messure_data.out_resis) << endl
+             << QString("零点电压: ") << UiUtils::double2string(UiUtils::messure_data.zero_voltage) << endl
+             << QString("绝缘电阻: ") << UiUtils::double2string(UiUtils::messure_data.ins_resis) << endl
+             << QString("压力: ") << UiUtils::double2string(UiUtils::messure_data.pressure) << endl
+             << QString("负10摄氏度下的压力: ") << UiUtils::double2string(UiUtils::messure_data.pressure_tm10) << endl
+             << QString("压力参数pk: ") << UiUtils::double2string(UiUtils::messure_data.pk) << endl
+             << QString("压力参数pb: ") << UiUtils::double2string(UiUtils::messure_data.pb)  << endl;
+
     txtOutput<<endl;
+
     f.close();
 
     QMessageBox::information(0, "文件保存", "文件保存成功!");
