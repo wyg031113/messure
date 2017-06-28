@@ -23,8 +23,14 @@ private:
     QLineEdit *TesterEdit;
     QLabel *CircumstanceLabel;
     QLineEdit *CircumstanceEdit;
-    QLabel *HumidityLable;
+    QLabel *HumidityLabel;
     QLineEdit *HumidityEdit;
+
+    QLabel *pkLabel;
+    QLineEdit *pkEdit;
+    QLabel *pbLabel;
+    QLineEdit *pbEdit;
+
     QLabel *DateLabel;
     QLabel *TimeLabel;
     QHBoxLayout *DateInput;
@@ -40,9 +46,13 @@ private:
       QLineEdit *day;
       QLineEdit *hour;
       QLineEdit *minute;
+   QPushButton *apply_btn;
+   QPushButton *load_btn;
 public slots:
     void save2();
     void refresh_time();
+    void apply();
+    void load();
 };
 
 #endif // RECORDINFO_H

@@ -43,21 +43,50 @@ RecordInfo::RecordInfo(QWidget *parent):
     TesterLabel->setFont(f);
     TesterEdit = new QLineEdit;
     TesterEdit->setFont(f);
+
     CircumstanceLabel = new QLabel(tr("环境温度:"));
     CircumstanceLabel->setFont(f);
     CircumstanceEdit = new QLineEdit;
+    CircumstanceEdit->setFixedSize(80, 35);
     CircumstanceEdit->setFont(f);
-    HumidityLable = new QLabel(tr("相对湿度:"));
-    HumidityLable->setFont(f);
+    HumidityLabel = new QLabel(tr("相对湿度:"));
+    HumidityLabel->setFont(f);
     HumidityEdit = new QLineEdit;
     HumidityEdit->setFont(f);
+    HumidityEdit->setFixedSize(80, 35);
+
+    QHBoxLayout *temp_hum_layout1 = new QHBoxLayout;
+    QHBoxLayout *temp_hum_layout2 = new QHBoxLayout;
+    temp_hum_layout1->addWidget(CircumstanceLabel);
+    temp_hum_layout2->addWidget(CircumstanceEdit);
+    temp_hum_layout2->addWidget(HumidityLabel);
+    temp_hum_layout2->addWidget(HumidityEdit);
+
+    pkLabel = new QLabel(tr("压力参数pk:"));
+    pkLabel->setFont(f);
+    pkEdit = new QLineEdit;
+    pkEdit->setFixedSize(80, 35);
+    pkEdit->setFont(f);
+    pbLabel = new QLabel(tr("压力参数pb:"));
+    pbLabel->setFont(f);
+    pbEdit = new QLineEdit;
+    pbEdit->setFont(f);
+    pbEdit->setFixedSize(80, 35);
+
+    QHBoxLayout *pkb_layout1 = new QHBoxLayout;
+    QHBoxLayout *pkb_layout2 = new QHBoxLayout;
+    pkb_layout1->addWidget(pkLabel);
+    pkb_layout2->addWidget(pkEdit);
+    pkb_layout2->addWidget(pbLabel);
+    pkb_layout2->addWidget(pbEdit);
+
 
     DateLabel = new QLabel(tr("测试日期:"));
     DateLabel->setFont(f);
     DateInput = new QHBoxLayout;
     year = new QLineEdit;
     year->setFont(f);
-    year->setFixedWidth(70);
+    year->setFixedWidth(80);
     QLabel *year1 = new QLabel(tr("年"));
     year1->setFont(f);
 
@@ -85,13 +114,13 @@ RecordInfo::RecordInfo(QWidget *parent):
     hour = new QLineEdit;
     hour->setFont(f);
 
-    hour->setFixedWidth(90);
+    hour->setFixedWidth(80);
     QLabel *hour1 = new QLabel(tr("时"));
     hour1->setFont(f);
     minute = new QLineEdit;
     minute->setFont(f);
 
-    minute->setFixedWidth(90);
+    minute->setFixedWidth(80);
     QLabel *minute1 = new QLabel(tr("分"));
     minute1->setFont(f);
     TimeInput->addWidget(hour);
@@ -103,10 +132,13 @@ RecordInfo::RecordInfo(QWidget *parent):
     SINEdit = new QLineEdit;
     SINEdit->setFont(f);
     save = new QPushButton(tr("保存"));
-    save->setFixedSize(70, 35);
+    save->setFixedSize(80, 35);
 
     refresh_btn = new QPushButton(tr("刷新时间"));
     refresh_btn->setFixedSize(70, 35);
+
+    apply_btn = new QPushButton(tr("应用"));;
+    load_btn = new QPushButton(tr("读取"));;
 
     mainLayout = new QGridLayout(this);
     mainLayout->setMargin(15);
@@ -117,10 +149,12 @@ RecordInfo::RecordInfo(QWidget *parent):
     mainLayout->addWidget(EINEdit, 1, 1);
     mainLayout->addWidget(TesterLabel, 2, 0);
     mainLayout->addWidget(TesterEdit, 2, 1);
-    mainLayout->addWidget(CircumstanceLabel, 3, 0);
-    mainLayout->addWidget(CircumstanceEdit, 3, 1);
-    mainLayout->addWidget(HumidityLable, 4, 0);
-    mainLayout->addWidget(HumidityEdit, 4, 1);
+    mainLayout->addLayout(temp_hum_layout1, 3, 0);
+    mainLayout->addLayout(temp_hum_layout2, 3, 1);
+    mainLayout->addLayout(pkb_layout1, 4, 0);
+    mainLayout->addLayout(pkb_layout2, 4, 1);
+    mainLayout->addWidget(apply_btn, 4, 2);
+    mainLayout->addWidget(load_btn, 4, 3);
     mainLayout->addWidget(DateLabel, 5, 0);
     mainLayout->addLayout(DateInput, 5, 1);
     mainLayout->addWidget(TimeLabel, 6, 0);
@@ -131,8 +165,21 @@ RecordInfo::RecordInfo(QWidget *parent):
     refresh_time();
     connect(save, SIGNAL(clicked()), this, SLOT(save2()));
     connect(refresh_btn, SIGNAL(clicked()), this, SLOT(refresh_time()));
+    connect(apply_btn, SIGNAL(clicked()), this, SLOT(apply()));
+    connect(load_btn, SIGNAL(clicked()), this, SLOT(load()));
 }
 
+void RecordInfo::apply()
+{
+    qDebug()<<"Apply pk-pb"<<pkEdit->text()<<" "<<pbEdit->text();
+    UiUtils::messure_data.pk = pkEdit->text().toDouble();
+    UiUtils::messure_data.pb = pbEdit->text().toDouble();
+}
+
+void RecordInfo::load()
+{
+    qDebug()<<"Load pk pb";
+}
 
 void RecordInfo::save2() {
 
@@ -154,7 +201,7 @@ void RecordInfo::save2() {
     txtOutput<<EINLabel->text()<<" " << EINEdit->text()<<endl;
     txtOutput<<TesterLabel->text()<<" "<<TesterEdit->text()<<endl;
     txtOutput<<CircumstanceLabel->text()<<" "<<CircumstanceEdit->text()<<endl;
-    txtOutput<<HumidityLable->text()<<" "<<HumidityEdit->text()<<endl;
+    txtOutput<<HumidityLabel->text()<<" "<<HumidityEdit->text()<<endl;
     txtOutput<< QString("自检电压: ") << UiUtils::double2string(UiUtils::messure_data.self_test_voltage) << endl
              << QString("输入阻抗: ") << UiUtils::double2string(UiUtils::messure_data.in_resis) << endl
              << QString("输出阻抗: ") << UiUtils::double2string(UiUtils::messure_data.out_resis) << endl
@@ -179,7 +226,7 @@ RecordInfo::~RecordInfo() {
     delete TesterEdit;
     delete CircumstanceLabel;
     delete CircumstanceEdit;
-    delete HumidityLable;
+    delete HumidityLabel;
     delete HumidityEdit;
     delete TimeLabel;
     delete TimeInput;
@@ -187,7 +234,10 @@ RecordInfo::~RecordInfo() {
     delete DateLabel;
     delete save;
     delete mainLayout;
-
+    delete pkLabel;
+    delete pbLabel;
+    delete pkEdit;
+    delete pbEdit;
     delete year;
     delete month;
     delete day;
