@@ -24,11 +24,24 @@ toolWidget::toolWidget(QWidget *parent) :
     warn->setFixedSize(warn_map.size());
     warn->setCursor(Qt::PointingHandCursor);
 
+    warn_text=new QLabel;
+    QFont qf;
+    qf.setPointSize(16);
+    warn_text->setFont(qf);
+    QPalette pe;
+    pe.setColor(QPalette::WindowText, Qt::red);
+    warn_text->setPalette(pe);
+
+    warn_text->setVisible(false);
+    warn->setVisible(false);
+
     QHBoxLayout *mainLayout=new QHBoxLayout;
     mainLayout->setContentsMargins(5,0,5,0);
     mainLayout->addWidget(tbTiJian);
     mainLayout->addWidget(tbMuMa);
     mainLayout->addWidget(tbLouDong);
+    mainLayout->addStretch(1);
+    mainLayout->addWidget(warn_text);
     mainLayout->addStretch(1);
     mainLayout->addWidget(warn);
     mainLayout->addStretch(1);
@@ -39,10 +52,20 @@ toolWidget::toolWidget(QWidget *parent) :
 }
  void toolWidget::timer_done()
  {
+
      if(warn->isVisible()){
          warn->setVisible(false);
+         warn_text->setVisible(false);
      }else{
-         warn->setVisible(true);
+         if(UiUtils::messure_data.pressure_messuring){
+            if(UiUtils::messure_data.pressure_tm10 < 18.2){
+                warn_text->setText("警告: P-10 < 18.2 MPa");
+            }else{
+                warn_text->setText("警告: P-10 > 25 MPa");
+            }
+            warn->setVisible(true);
+            warn_text->setVisible(true);
+         }
      }
  }
  void  toolWidget::start_timer()

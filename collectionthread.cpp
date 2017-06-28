@@ -187,6 +187,7 @@ void CollectionThread::run() {
                pressure_str = str;
                UiUtils::messure_data.pressure = pressure;
                UiUtils::messure_data.pressure_tm10 = press_tm10;
+               UiUtils::messure_data.pressure_messuring = true;
            }
            emit modify(str);
            sleep(1);
@@ -201,6 +202,7 @@ void CollectionThread::run() {
                     if(stop_funs[state])
                         stop_funs[state]();
                 }
+                UiUtils::messure_data.pressure_messuring = false;
             }
             push.wait(&mutex);
         }

@@ -14,6 +14,7 @@ public:
     toolButton *tbMuMa;
     toolButton *tbLouDong;
     QLabel *warn;
+    QLabel *warn_text;
     QTimer *timer;
     void start_timer();
     void stop_timer();
