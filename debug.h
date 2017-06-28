@@ -59,6 +59,7 @@
 //输出信息到file
 #define MSG(file, format, ...)do{\
 	fprintf(file, "%s(%d)-%s():"format, __FILE__, __LINE__, __FUNCTION__,##__VA_ARGS__);\
+    fflush(file);\
 }while(0)
 
 //普通消息

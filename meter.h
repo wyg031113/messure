@@ -190,7 +190,27 @@ int in_out_resis_stop(void);
  */
 int in_out_resis_mesure(double u1, double *in_resis, double *out_resis);
 
+/***************************************************************
+ * 自检
+ ***************************************************************/
+/*
+ * 自检开始
+ * return: 成功返回0，失败返回-1
+ */
 int self_test_start();
+
+
+/*
+ * 获得自检电压
+ * U0,返回自检电压
+ * return: 成功返回0，失败返回-1
+ */
+int self_test_messure(double *U0);
+
+/*
+ * 自检停止
+ * return: 成功返回0，失败返回-1
+ */
 int self_test_stop();
 
 #ifdef __cplusplus

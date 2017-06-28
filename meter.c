@@ -897,11 +897,68 @@ int in_out_resis_stop(void)
 	return stop_ad_convert(ad7124_handler, &in_out_resis_param);
 }
 
+/***************************************************************
+ * 自检
+ ***************************************************************/
+/*
+ * 自检开始
+ * return: 成功返回0，失败返回-1
+ */
 int self_test_start()
 {
+    int ret = 0;
+
+    ret = set_gpio_value(GPIO0, 1);
+    if(ret < 0){
+        INFO("GPIO0,inout resis start failed.\n");
+        goto failed1;
+    }
+    usleep(100000);
+
+    ret =  start_ad_convert(ad7124_handler, &in_out_resis_param);
+    if(ret < 0){
+        INFO("start ad,inout resis start failed.\n");
+        goto failed1;
+    }
+    DEBUG("In out resistance start successfully.\n");
+    return 0;
+failed1:
+    set_gpio_value(GPIO0, 0);
+    return -1;
+}
+
+/*
+ * 获得自检电压
+ * U0,返回自检电压
+ * return: 成功返回0，失败返回-1
+ */
+int self_test_messure(double *U0)
+{
+    int i, n;
+    int ret;
+    double voltage = 0;
+    ad_value_t vals[N_CODE];
+
+    n = get_ad_nval(ad7124_handler, vals, N_CODE);
+    for(i = 0; i < n; i++)
+        convert_code2voltage(&vals[i], &in_out_resis_param);
+
+    ret = average_voltage(vals, n, &voltage);
+    if(ret != SUCCESS){
+        INFO("agerage voltage failed!\n");
+        return -1;
+    }
+    *U0 = voltage *2;
+    DEBUG("voltage:%e voltage*2:%e\n", voltage, *U0);
     return 0;
 }
+
+/*
+ * 自检停止
+ * return: 成功返回0，失败返回-1
+ */
 int self_test_stop()
 {
-    return 0;
+    set_gpio_value(GPIO0, 0);
+    return stop_ad_convert(ad7124_handler, &in_out_resis_param);
 }

@@ -73,6 +73,22 @@ void CollectionThread::run() {
             i++;
             if(state == SELF_TEST){
                 str = "设备自检中" + QString::number(i);
+                double U0;
+                int ret;
+                 //读取自检电压
+                ret = self_test_messure(&U0);
+                str  = "";
+                if(ret < 0){
+                    str = "读取自检电压 失败! \n";
+                }
+
+               str += QString::number(i) + QString(".自检电压: ") +
+                       UiUtils::double2string(U0) + QString(" V ");
+               if(U0 >= 2.8 && U0 <= 3.2){
+                   str += "合格!";
+               }else{
+                   str += "不合格";
+               }
             }else  if(state == IN_OUT_RESIS) {
                double din, dout;
                int ret;
