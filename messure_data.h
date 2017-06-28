@@ -8,9 +8,11 @@ public:
     double out_resis;
     double ins_resis;
     double self_test_voltage;
+    bool   pressure_messuring;
     double pressure;
     double pressure_tm10;
     double temperature;
+
     double pk;
     double pb;
 };

@@ -173,9 +173,9 @@ void CollectionThread::run() {
                double press_tm10 = 0;
                PT2PTm10(pressure, UiUtils::messure_data.temperature, &press_tm10);
                str += QString::number(i) + QString(".压力:")  +
-                      UiUtils::double2string(pressure) + QString(" 帕\n");
+                      UiUtils::double2string(pressure) + QString(" 兆\n");
                str += QString("负10摄氏度下的压力:")  +
-                      UiUtils::double2string(pressure) + QString(" 帕\n");
+                      UiUtils::double2string(pressure) + QString(" 兆\n");
                str += QString("测点温度:")  +
                       UiUtils::double2string(UiUtils::messure_data.temperature) +
                       QString(" 摄氏度\n");
