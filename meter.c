@@ -26,12 +26,12 @@
 static int ntemp = 0;
 static double ref_low_v		= -1.8;
 static double ref_high_v	=  1.8;
-const static int timeout    = 1000;
+const static int timeout    = 1000;      //ms
 
 static struct ad7124_device my_ad7124;                    /* A new driver instance */
 static struct ad7124_device *ad7124_handler = &my_ad7124; /* A driver handle to pass around */
 
-static temperature_tab_t tabs[N_TEMP];
+static temperature_tab_t tabs[N_TEMP];      //
 
 /*
  * 测试double变量d是不是0
@@ -67,8 +67,8 @@ void config_ref_voltage(double ref_low, double ref_high)
 int gpio_init(void)
 {
 	int i;
-	int gpio[] =		{GPIO0, GPIO1, GPIO2, GPIO3, GPIO4, GPIO5};
-	int init_value[] =	{0,		0,	   0,	  0,	 0,	    1    };
+    int gpio[] =		{GPIO0, GPIO1, GPIO2, GPIO3, GPIO4, GPIO5, GPIO6};
+    int init_value[] =	{0,		0,	   0,	  0,	 0,	    0    , 1    };
 	int ret = SUCCESS;
 	for(i = 0; i < sizeof(gpio)/sizeof(int); i++){
 		int r = set_gpio_value(gpio[i], init_value[i]);
@@ -388,7 +388,8 @@ int resistance_mesure(double *d)
 	if(check_double_zero(voltage))
 		return -1;
 	//计算绝缘电阻值
-	double resis = (3*251.0*0.01)/voltage - 20 * 1e-3; //MoM
+    voltage /= 251;
+    double resis = (0.6712)/(voltage*voltage) + 6.24/voltage + 0.3276 ; //MoM
 	DEBUG("resistance voltage: %e resis:%f\n", voltage, resis);
 	*d = resis;
 	return SUCCESS;
@@ -425,7 +426,7 @@ int start_eeprom(void)
 		set_gpio_value(GPIO3, 0);
 		return -1;
 	}
-	usleep(100000);
+    usleep(100000);  //us
 	return 0;
 }
 
@@ -609,11 +610,11 @@ int temperature_mesure(double u1, temperature_tab_t *tabs, int n, double *d)
 		return -1;
 	}
 
-	double u0 = voltage;
+    double u0 = voltage/67.6;
 	Rx = (u0 * R2 * (R1 + R4) + u1 * R2 * R4) / (u1 * R1 - u0 * (R1 + R4));
 	//计算温度值
 	for(i = 0; i < n; i++){
-		if(Rx > tabs[i].res)
+        if(Rx < tabs[i].res)
 			break;
 	}
 	if(i == 0){
@@ -726,6 +727,9 @@ int pressure_mesure(double *d)
 
 	voltage1 /= n1;
 	voltage2 /= n2;
+
+    voltage1 /= 279*6.1;
+    voltage2 /= 279;
 
 	//计算温压力
 	DEBUG("pressure voltage1: %f voltage2:%f\n", voltage1, voltage2);

@@ -24,7 +24,7 @@ CollectionThread::start_stop_fun_t CollectionThread::stop_funs[MeterType_NR] =
     pressure_stop,
     self_test_stop,
 };
-CollectionThread::CollectionThread()
+CollectionThread::CollectionThread()      //程序启动时调用初始化函数
 {
     int ret;
     ret = gpio_init();
@@ -127,6 +127,7 @@ void CollectionThread::run() {
         }
         else {
             if(!bFinish && bStart){
+                bStart = false;
                 last_state = -1;
                 if(state < 0 || state >= CollectionThread::MeterType_NR){
                     qDebug()<<"in start work:Eror state:"<<state;
@@ -152,9 +153,9 @@ CollectionThread::~CollectionThread(){
         delete single;
 }
 
-void CollectionThread::start2() {
+void CollectionThread::start2() {    //开始按钮
     working = true;
-    push.wakeAll();
+    push.wakeAll();      //唤醒线程
 }
 
 void CollectionThread::stop2() {
