@@ -44,8 +44,8 @@ void statusWidget::showUpdateInfo() {
         return;
     }
    QString app_dir = QApplication::applicationDirPath();
-   QString app_file = "/opt/messure/messure";  //QApplication::applicationFilePath();
-   QString app_name  = "messure";     // QApplication::applicationName();
+   QString app_file = "/opt/measure/measure";  //QApplication::applicationFilePath();
+   QString app_name  = "measure";     // QApplication::applicationName();
    QString src = QString(UiUtils::mount_point) + QString("/")+QString(app_name);
    qDebug()<<"Srcfile:"<<src;
    QFile  dst(app_file);
@@ -53,7 +53,7 @@ void statusWidget::showUpdateInfo() {
    if(!src_file.exists()){
        QMessageBox::information(0,"更新失败", "没有发现新版本!");
    }else{
-       dst.rename("messure.bak");
+       dst.rename("measure.bak");
     if(QFile::copy(src, app_file)){
          QMessageBox::information(0,"版本更新", "版本更新成功!\n点击确定重新启动本程序!");
          qApp->quit();
@@ -64,7 +64,7 @@ void statusWidget::showUpdateInfo() {
     }else{
         dst.rename(app_name);
          QMessageBox::information(0,"更新失败", "没有发现新版本!");
-         QFile bak_file("/opt/messure/messure.bak");
+         QFile bak_file("/opt/measure/measure.bak");
          bak_file.remove();
     }
    }

@@ -378,6 +378,10 @@ int resistance_measure(double *d)
 	double voltage = 0;
 	ad_value_t vals[N_CODE];
 	n = get_ad_nval(ad7124_handler, vals, N_CODE);
+    if(n <= 0){
+        INFO("get ad nval failed!\n");
+        return -1;
+    }
 	for(i = 0; i < n; i++)
 		convert_code2voltage(&vals[i], &ins_res_param);
 	ret = average_voltage(vals, n, &voltage);	
@@ -641,7 +645,10 @@ int temperature_measure(double u1, temperature_tab_t *tabs, int n, double *d)
 	R4 = 0.1;
 	
 	nval = get_ad_nval(ad7124_handler, vals, N_CODE);
-
+    if(nval <= 0){
+        INFO("Get ad val failed!\n");
+        return -1;
+    }
 	for(i = 0; i < nval; i++)
 		convert_code2voltage(&vals[i], &temperature_param);
 	ret = average_voltage(vals, nval, &voltage);	
@@ -987,6 +994,10 @@ int self_test_measure(double *U0)
     ad_value_t vals[N_CODE];
 
     n = get_ad_nval(ad7124_handler, vals, N_CODE);
+    if(n <= 0){
+        INFO("get ad val failed!\n");
+        return -1;
+    }
     for(i = 0; i < n; i++)
         convert_code2voltage(&vals[i], &in_out_resis_param);
 
@@ -1051,6 +1062,10 @@ int zero_voltage_measure(double *d)
     ad_value_t vals[N_CODE];
 
     n = get_ad_nval(ad7124_handler, vals, N_CODE);
+    if(n <= 0){
+        INFO("get ad value failed!\n");
+        return -1;
+    }
     for(i = 0; i < n; i++)
         convert_code2voltage(&vals[i], &pressure_param2);
 

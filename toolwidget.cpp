@@ -29,7 +29,7 @@ toolWidget::toolWidget(QWidget *parent) :
     qf.setPointSize(16);
     warn_text->setFont(qf);
     QPalette pe;
-    pe.setColor(QPalette::WindowText, Qt::red);
+    pe.setColor(QPalette::WindowText, Qt::yellow);
     warn_text->setPalette(pe);
 
     warn_text->setVisible(false);
@@ -59,9 +59,9 @@ toolWidget::toolWidget(QWidget *parent) :
      }else{
          if(UiUtils::messure_data.pressure_messuring){
             if(UiUtils::messure_data.pressure_tm10 < 18.2){
-                warn_text->setText("警告: P-10 < 18.2 MPa");
+                warn_text->setText("警告P-10 < 18.2 MPa");
             }else{
-                warn_text->setText("警告: P-10 > 25 MPa");
+                warn_text->setText("警告P-10 > 25 MPa");
             }
             warn->setVisible(true);
             warn_text->setVisible(true);

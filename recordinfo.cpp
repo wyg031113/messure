@@ -64,12 +64,12 @@ RecordInfo::RecordInfo(QWidget *parent):
     temp_hum_layout2->addWidget(HumidityLabel);
     temp_hum_layout2->addWidget(HumidityEdit);
 
-    pkLabel = new QLabel(tr("压力参数pk:"));
+    pkLabel = new QLabel(tr("参数pk:"));
     pkLabel->setFont(f);
     pkEdit = new QLineEdit;
     pkEdit->setFixedSize(80, 35);
     pkEdit->setFont(f);
-    pbLabel = new QLabel(tr("压力参数pb:"));
+    pbLabel = new QLabel(tr("参数pb:"));
     pbLabel->setFont(f);
     pbEdit = new QLineEdit;
     pbEdit->setFont(f);
@@ -137,10 +137,12 @@ RecordInfo::RecordInfo(QWidget *parent):
     save->setFixedSize(80, 35);
 
     refresh_btn = new QPushButton(tr("刷新时间"));
-    refresh_btn->setFixedSize(70, 35);
+    refresh_btn->setFixedSize(80, 35);
 
     apply_btn = new QPushButton(tr("应用"));;
     load_btn = new QPushButton(tr("读取"));;
+    load_btn->setFixedSize(80, 35);
+    apply_btn->setFixedSize(80,35);
 
     mainLayout = new QGridLayout(this);
     mainLayout->setMargin(15);
